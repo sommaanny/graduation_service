@@ -1,6 +1,6 @@
 package graduation_service.graduation.repository;
 
-import graduation_service.graduation.domain.entity.User;
+import graduation_service.graduation.domain.entity.Admin;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -9,20 +9,20 @@ import java.util.List;
 
 @Repository
 @RequiredArgsConstructor
-public class UserRepository {
+public class AdminRepository {
 
     private final EntityManager em;
 
-    public void save(User user) {
+    public void save(Admin user) {
         em.persist(user);
     }
 
-    public User findOne(Long id) {
-        return em.find(User.class, id);
+    public Admin findOne(Long id) {
+        return em.find(Admin.class, id);
     }
 
-    public List<User> findAll() {
-        return em.createQuery("select u from User u", User.class).getResultList();
+    public List<Admin> findAll() {
+        return em.createQuery("select u from User u", Admin.class).getResultList();
     }
 
 }

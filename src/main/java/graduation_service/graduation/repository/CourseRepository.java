@@ -44,4 +44,8 @@ public class CourseRepository {
         return result.stream().findFirst();
     }
 
+    public void delete(Course course) {
+        em.remove(course);
+    }
+
 }

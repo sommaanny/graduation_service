@@ -39,4 +39,8 @@ public class GraduationRequirementsRepository {
         return result.stream().findFirst(); //결과가 없으면 Optional.empty() 반환
     }
 
+    public void delete(GraduationRequirements graduationRequirements) {
+        em.remove(graduationRequirements);
+    }
+
 }

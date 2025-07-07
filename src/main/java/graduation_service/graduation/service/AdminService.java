@@ -1,6 +1,6 @@
 package graduation_service.graduation.service;
 
-import graduation_service.graduation.repository.UserRepository;
+import graduation_service.graduation.repository.AdminRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -8,12 +8,14 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
-public class UserService {
+public class AdminService {
 
-    private final UserRepository userRepository;
+    private final AdminRepository adminRepository;
 
     //회원가입
 
 
     //로그인
+
+
 }

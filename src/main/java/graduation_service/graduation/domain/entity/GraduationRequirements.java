@@ -4,6 +4,8 @@ import graduation_service.graduation.domain.enums.Department;
 import jakarta.persistence.*;
 import lombok.Getter;
 
+import java.util.List;
+
 @Entity
 @Getter
 public class GraduationRequirements {
@@ -27,4 +29,17 @@ public class GraduationRequirements {
     //학과
     @Enumerated(EnumType.STRING)
     private Department department;
+
+    //mappedBy -> 연관관계 주인 지정(주인이 아닌 엔티티는 readOnly)
+    //cascade는 연관된 엔티티를 함께 저장, 수정, 삭제할 때 사용
+    //여기서는 CascadeType.ALL
+    // orphanRemoval = true 부모 엔티티와의 연관이 끊어졌을 때 자식 엔티티 자동 삭제
+    @OneToMany(mappedBy = "graduationRequirements", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<GraduationRequirementsCourses> graduationRequirementsCourses;
+
+    //연관관계 편의 메서드
+    public void addGraduationRequirementsCourses(GraduationRequirementsCourses grc) {
+        graduationRequirementsCourses.add(grc);
+        grc.setGraduationRequirements(this);
+    }
 }
