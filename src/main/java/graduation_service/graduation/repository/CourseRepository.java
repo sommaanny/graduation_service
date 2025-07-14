@@ -26,22 +26,30 @@ public class CourseRepository {
         return em.createQuery("select c from Course c", Course.class).getResultList();
     }
 
-    public Optional<Course> findByCourseTitle(String courseTitle) {
-        List<Course> result = em.createQuery("select c from Course c where c.courseTitle = :courseTitle"
+    //과목 이름으로 조회
+    public List<Course> findByCourseTitle(String courseTitle) {
+        return  em.createQuery("select c from Course c where c.courseTitle = :courseTitle"
                         , Course.class)
                 .setParameter("courseTitle", courseTitle)
                 .getResultList();
-
-        return result.stream().findFirst();
     }
 
-    public Optional<Course> findByCredits(int credits) {
-        List<Course> result = em.createQuery("select c from Course c where c.credits = :credits"
+    // 학점으로 조회
+    public List<Course> findByCredits(int credits) {
+        return em.createQuery("select c from Course c where c.credits = :credits"
                         , Course.class)
                 .setParameter("credits", credits)
                 .getResultList();
+    }
 
-        return result.stream().findFirst();
+
+    //학수번호로 조회
+    public Optional<Course> findByCourseNumber(String courseNumber) {
+        return  em.createQuery("select c from Course c where c.courseNumber = :courseNumber"
+                        , Course.class)
+                .setParameter("courseNumber", courseNumber)
+                .getResultList()
+                .stream().findFirst();
     }
 
     public void delete(Course course) {

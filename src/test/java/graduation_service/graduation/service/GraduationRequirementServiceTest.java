@@ -1,4 +1,228 @@
+package graduation_service.graduation.service;
+
+import graduation_service.graduation.domain.dto.GraduationRequirementUpdateDto;
+import graduation_service.graduation.domain.entity.Course;
+import graduation_service.graduation.domain.entity.GraduationRequirements;
+import graduation_service.graduation.domain.entity.GraduationRequirementsCourses;
+import graduation_service.graduation.domain.enums.CourseType;
+import graduation_service.graduation.domain.enums.Department;
+import graduation_service.graduation.repository.GraduationRequirementCoursesRepository;
+import lombok.extern.slf4j.Slf4j;
+import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.Optional;
+
+import static graduation_service.graduation.domain.enums.CourseType.*;
+import static graduation_service.graduation.domain.enums.Department.*;
+import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
+
+@Slf4j
+@Transactional
+@SpringBootTest
 class GraduationRequirementServiceTest {
-  
+
+    @Autowired GraduationRequirementService graduationRequirementService;
+    @Autowired
+    GraduationRequirementCoursesRepository grcRepository;
+
+    @Test
+    void 졸업요건_저장() {
+        //given
+        GraduationRequirements graduationRequirements
+                = new GraduationRequirements(COMPUTER_SCIENCE, 130, 65, 65, 3.0F);
+
+        //when
+        Long saveId = graduationRequirementService.addGR(graduationRequirements);
+
+        //then
+        assertThat(saveId).isEqualTo(graduationRequirements.getId());
+    }
+
+    //졸업요건 중복 저장시 예외 발생해야함
+    @Test
+    void 졸업요건_중복저장() {
+        //given
+        GraduationRequirements graduationRequirements1
+                = new GraduationRequirements(COMPUTER_SCIENCE, 130, 65, 65, 3.0F);
+
+        GraduationRequirements graduationRequirements2
+                = new GraduationRequirements(COMPUTER_SCIENCE, 135, 70, 65, 3.0F);
+
+        Long saveId1 = graduationRequirementService.addGR(graduationRequirements1);
+
+        //when, then
+
+        assertThatThrownBy(() -> graduationRequirementService.addGR(graduationRequirements2))
+                .isInstanceOf(IllegalStateException.class)
+                .hasMessageContaining("이미 존재하는 학과의 졸업요건입니다.");
+    }
+
+
+    @Test
+    void 졸업요건_과목_추가() {
+        //given
+        GraduationRequirements graduationRequirements
+                = new GraduationRequirements(COMPUTER_SCIENCE, 130, 65, 65, 3.0F);
+
+        Long saveId = graduationRequirementService.addGR(graduationRequirements);
+
+        //Course DB에 있는 데이터라고 가정
+        Course course = new Course("AIE-12234", "기계학습", 3);
+        CourseType courseType = MAJOR_REQUIRED; //전공필수
+
+        //when
+        graduationRequirementService.addCourseToGraduationRequirement(saveId, course, courseType);
+
+        //then
+        GraduationRequirements findGR = graduationRequirementService.findGR(saveId);
+        List<GraduationRequirementsCourses> graduationRequirementsCourses =
+                findGR.getGraduationRequirementsCourses();
+
+        for (GraduationRequirementsCourses graduationRequirementsCourse : graduationRequirementsCourses) {
+            log.info("학수번호: " + graduationRequirementsCourse.getCourse().getCourseNumber());
+            log.info("과목명: " + graduationRequirementsCourse.getCourse().getCourseTitle());
+            log.info("학점: " + graduationRequirementsCourse.getCourse().getCredits());
+            log.info("과목타입: " + graduationRequirementsCourse.getCourseType());
+        }
+
+        assertThat(graduationRequirementsCourses.size()).isEqualTo(1);
+
+        GraduationRequirementsCourses added = graduationRequirementsCourses.get(0);
+
+        //학수번호 검증
+        assertThat(added.getCourse().getCourseNumber())
+                .isEqualTo("AIE-12234");
+
+        //과목타입 검증
+        assertThat(added.getCourseType())
+                .isEqualTo(MAJOR_REQUIRED);
+
+    }
+
+    //id로 조회
+    @Test
+    void 졸업요건_조회() {
+        //given
+        GraduationRequirements graduationRequirements
+                = new GraduationRequirements(COMPUTER_SCIENCE, 130, 65, 65, 3.0F);
+
+        Long saveId = graduationRequirementService.addGR(graduationRequirements);
+
+        //when
+        GraduationRequirements findGR = graduationRequirementService.findGR(saveId);
+
+        //then
+        assertThat(findGR.getId()).isEqualTo(saveId);
+        assertThat(findGR.getDepartment()).isEqualTo(graduationRequirements.getDepartment());
+    }
+
+    //학과로 조회
+    @Test
+    void 졸업요건_학과로_조회() {
+        //given
+        GraduationRequirements graduationRequirements
+                = new GraduationRequirements(COMPUTER_SCIENCE, 130, 65, 65, 3.0F);
+
+        Long saveId = graduationRequirementService.addGR(graduationRequirements);
+
+        //when
+        Optional<GraduationRequirements> find = graduationRequirementService.findByGRDepartment(COMPUTER_SCIENCE);
+        GraduationRequirements findGR = find.orElseThrow(() -> new IllegalStateException("해당 학과의 졸업요건은 존재하지 않습니다."));
+
+        //then
+        assertThat(findGR.getId()).isEqualTo(saveId);
+        assertThat(findGR.getDepartment()).isEqualTo(graduationRequirements.getDepartment());
+    }
+
+    //전체 조회
+    @Test
+    void 졸업요건_전체_조회() {
+        //given
+        GraduationRequirements graduationRequirements
+                = new GraduationRequirements(COMPUTER_SCIENCE, 130, 65, 65, 3.0F);
+
+        GraduationRequirements graduationRequirements2
+                = new GraduationRequirements(AI_ENGINEERING, 130, 65, 65, 3.0F);
+
+        graduationRequirementService.addGR(graduationRequirements);
+        graduationRequirementService.addGR(graduationRequirements2);
+
+        //when
+        List<GraduationRequirements> allGR = graduationRequirementService.findAllGR();
+
+        //then
+        for (GraduationRequirements requirements : allGR) {
+            log.info(requirements.getDepartment() + "의 졸업요건");
+        }
+
+        assertThat(allGR).extracting("department")
+                .contains(COMPUTER_SCIENCE, AI_ENGINEERING);
+
+    }
+
+    //삭제
+    @Test
+    void 졸업요건_삭제() {
+        //given
+        GraduationRequirements graduationRequirements
+                = new GraduationRequirements(COMPUTER_SCIENCE, 130, 65, 65, 3.0F);
+
+        GraduationRequirements graduationRequirements2
+                = new GraduationRequirements(AI_ENGINEERING, 130, 65, 65, 3.0F);
+
+        Long saveId1 = graduationRequirementService.addGR(graduationRequirements);
+        Long saveId2 = graduationRequirementService.addGR(graduationRequirements2);
+
+        //when
+        graduationRequirementService.deleteGR(saveId1);
+
+        //then
+        List<GraduationRequirements> allGR = graduationRequirementService.findAllGR();
+        for (GraduationRequirements requirements : allGR) {
+            log.info(requirements.getDepartment() + "의 졸업요건");
+        }
+
+        assertThat(graduationRequirementService.findGR(saveId1))
+                .isNull();
+    }
+
+    //삭제 실패
+    @Test
+    void 졸업요건_삭제_실패() {
+        assertThatThrownBy(() -> graduationRequirementService.deleteGR(1L))
+                .isInstanceOf(IllegalStateException.class)
+                .hasMessageContaining("삭제할 졸업요건이 없습니다");
+    }
+
+    //변경
+    @Test
+    void 졸업요건_변경() {
+        //given
+        GraduationRequirements graduationRequirements
+                = new GraduationRequirements(COMPUTER_SCIENCE, 130, 65, 65, 3.0F);
+
+        Long saveId = graduationRequirementService.addGR(graduationRequirements);
+
+        //when
+        GraduationRequirementUpdateDto updateDto = new GraduationRequirementUpdateDto(125, 65, 60, 3.0F);
+
+        graduationRequirementService.updateGR(saveId, updateDto);
+
+        //then
+        GraduationRequirements findGR2 = graduationRequirementService.findGR(saveId);
+        log.info("학과: " + findGR2.getDepartment() + ", 총 학점: " + findGR2.getTotalCreditsEarned() + ", 전공 학점: "
+        + findGR2.getMajorCreditsEarned() + ", 교양 학점: " + findGR2.getGeneralEducationCreditsEarned());
+
+        assertThat(findGR2.getTotalCreditsEarned()).isEqualTo(125);
+        assertThat(findGR2.getGeneralEducationCreditsEarned()).isEqualTo(60);
+    }
+
+
+
 }

@@ -2,6 +2,7 @@ package graduation_service.graduation.repository;
 
 import graduation_service.graduation.domain.entity.GraduationRequirementsCourses;
 import graduation_service.graduation.domain.enums.CourseType;
+import graduation_service.graduation.domain.enums.Department;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -14,26 +15,30 @@ public class GraduationRequirementCoursesRepository {
 
     private final EntityManager em;
 
-    public void save(GraduationRequirementsCourses graduationCourses) {
-        em.persist(graduationCourses);
-    }
-
-    public GraduationRequirementsCourses findOne(Long id) {
-        return em.find(GraduationRequirementsCourses.class, id);
-    }
-
-    public List<GraduationRequirementsCourses> findAll() {
-        return em.createQuery("select g from GraduationRequirementsCourses g", GraduationRequirementsCourses.class)
+    //특정 학과의 졸업요건 과목 전체 조회
+    public List<GraduationRequirementsCourses> findAll(Department department) {
+        return em.createQuery("select g from GraduationRequirementsCourses g where g.graduationRequirements.department = :department"
+                        , GraduationRequirementsCourses.class)
+                .setParameter("department", department)
                 .getResultList();
     }
 
-    //과목 타입(전공, 교양 ..)으로 조회
-    public List<GraduationRequirementsCourses> findByCourseType(CourseType courseType) {
-        return em.createQuery("select g from GraduationRequirementsCourses g where g.courseType = :courseType"
+    //특정 학과의 졸업요건 과목 중 과목 타입(전공, 교양 ..)으로 조회
+    public List<GraduationRequirementsCourses> findByCourseType(Department department, CourseType courseType) {
+        return em.createQuery("select g from GraduationRequirementsCourses g where g.graduationRequirements.department = :department" +
+                                " and g.courseType = :courseType"
                         , GraduationRequirementsCourses.class)
+                .setParameter("department", department)
                 .setParameter("courseType", courseType)
                 .getResultList();
     }
 
+    //특정 학과의 졸업요건 과목 중 학수번호로 조회
+
+    //특정 학과의 졸업요건 과목 중 과목 이름으로 조회
+
+    //특정 학과 졸업요건 과목 중 학점(2학점, 3학점 ..)으로 조회
+
+    //복합 검색
 
 }

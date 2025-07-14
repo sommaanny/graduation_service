@@ -23,11 +23,17 @@ public class GraduationRequirementsCourses {
     // Course 엔티티에서 삭제된 course_type을 대신해 추가해주었다.
     private CourseType courseType;
 
+    //연관관계 편의 메서드
+    public void setCourse(Course course) {
+        this.course = course;
+        course.getGraduationRequirementsCourses().add(this);
+    }
+
     public void setGraduationRequirements(GraduationRequirements graduationRequirements) {
         this.graduationRequirements = graduationRequirements;
     }
 
-    public void setCourse(Course course) {
-        this.course = course;
+    public void setCourseType(CourseType courseType) {
+        this.courseType = courseType;
     }
 }
