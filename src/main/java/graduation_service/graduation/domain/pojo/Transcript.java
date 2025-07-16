@@ -1,8 +1,11 @@
 package graduation_service.graduation.domain.pojo;
 
 import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
-@Getter
+@Getter @Setter
+@ToString
 public class Transcript {
 
     private Long id;
@@ -10,11 +13,17 @@ public class Transcript {
     // 성적
     private float gpa;
 
+    //총 취득학점
+    private int totalCredits;
+
     // 이수한 전공필수 학점
     private int requiredMajorCredits;
 
     // 이수한 전공선택 학점
     private int electiveMajorCredits;
+
+    // 이수한 기초전공 학점
+    private int basicMajorCredits;
 
     // 이수한 필수교양 학점
     private int requiredGeneralEducationCredits;
@@ -30,5 +39,6 @@ public class Transcript {
 
     // 기타 이수학점
     private int otherEarnedCredits;
+
 
 }

@@ -32,6 +32,9 @@ dependencies {
 	testCompileOnly 'org.projectlombok:lombok'
 	testAnnotationProcessor 'org.projectlombok:lombok'
 
+	//Apache PDFBox - pdf 파일 처리를 위한 라이브러리
+	implementation 'org.apache.pdfbox:pdfbox:2.0.34'
+
 	compileOnly 'org.projectlombok:lombok'
 	runtimeOnly 'com.h2database:h2'
 	annotationProcessor 'org.projectlombok:lombok'
