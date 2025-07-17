@@ -1,50 +1,21 @@
-package graduation_service.graduation.service;
+package graduation_service.graduation.service.graduationComparisonService;
 
-import graduation_service.graduation.domain.entity.GraduationRequirements;
-import graduation_service.graduation.domain.enums.Department;
-import graduation_service.graduation.domain.pojo.English;
 import graduation_service.graduation.domain.pojo.Transcript;
-import graduation_service.graduation.repository.CourseRepository;
-import graduation_service.graduation.repository.GraduationRequirementCoursesRepository;
-import graduation_service.graduation.repository.GraduationRequirementsRepository;
-import lombok.RequiredArgsConstructor;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Optional;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 
 @Service
-@RequiredArgsConstructor
-public class GraduationCheckService {
+public class TranscriptExtractor {
 
-    private final GraduationRequirementsRepository graduationRequirementsRepository;
-    private final CourseRepository courseRepository;
-    private final GraduationRequirementCoursesRepository graduationRequirementCoursesRepository;
-
-
-    //졸업요건 비교
-    @Transactional
-    public boolean checkGraduation(Department department) {
-//        Transcript transcript = inputTranscript(); //성적표 입력
-        English english = inputEnglish(); //영어성적 입력
-
-        //비교 로직
-        Optional<GraduationRequirements> findGR = graduationRequirementsRepository.findByDepartment(department);
-
-
-
-        return true;
-    }
-
-
-    //성적표 입력(pdf)
-    public Transcript inputTranscript(MultipartFile file) throws IOException {
-
+    public Transcript extract(MultipartFile file) throws IOException {
         InputStream inputStream = file.getInputStream();
         PDDocument document = PDDocument.load(inputStream); // pdf 파일 읽기
 
@@ -55,11 +26,28 @@ public class GraduationCheckService {
 
         // 성적표 클래스에 매핑
         Transcript transcript = new Transcript(); //매핑할 성적표 객체 생성
+        mappingTranscript(transcript, text); //매핑
+
+        return transcript;
+    }
+
+    private void mappingTranscript(Transcript transcript, String text) {
+
+        Pattern courseNumberPattern = Pattern.compile("[A-Z]{3}[0-9]{4}"); //학수번호 패턴 ex) AIE2004 - 영어3개, 숫자4개
+
         String[] lines = text.split("\n"); //텍스트를 행 단위로 분리
 
         for (int i = 0; i < lines.length; i++) {
             //pdf에서 추출한 text 특성상 양 옆에 공백에 있을 가능성이 큼 따라서 trim으로 제거
             String line = lines[i].trim();
+
+            // 이수 과목 세부내용 확인
+            // 1.성적표 텍스트에서 학수번호 추출
+            Matcher matcher = courseNumberPattern.matcher(line); //매칭을 위한 객체 생성
+            if (matcher.find()) {
+                String matchingText = matcher.group(); // 매칭부분
+                transcript.getCompletedCourseNumbers().add(matchingText); //매칭 부분 set에 저장
+            }
 
             //P(신청학점과 취득학점에는 포함되나, 평점평균 산출시 제외됨) 뒤에 순서대로 이수학점이 나열됨
             if (line.matches("^P\\(.*\\)$")) {
@@ -106,19 +94,9 @@ public class GraduationCheckService {
                         transcript.setTotalTransferredCredits(total);
                     }
                 }
-                break;
             }
         }
-
-        // 이수 과목 세부내용 확인
-
-        return transcript;
     }
 
-    //영어성적 입력
-    public English inputEnglish() {
-        English english = new English();
-        return null;
-    }
 
 }

@@ -4,6 +4,9 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Getter @Setter
 @ToString
 public class Transcript {
@@ -39,6 +42,9 @@ public class Transcript {
 
     // 기타 이수학점
     private int otherEarnedCredits;
+
+    //이수 과목들의 학수번호들
+    private Set<String> completedCourseNumbers = new HashSet<>();
 
 
 }
