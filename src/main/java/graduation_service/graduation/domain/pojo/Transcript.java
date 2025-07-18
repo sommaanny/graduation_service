@@ -11,8 +11,6 @@ import java.util.Set;
 @ToString
 public class Transcript {
 
-    private Long id;
-
     // 성적
     private float gpa;
 
