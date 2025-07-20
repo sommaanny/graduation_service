@@ -1,31 +1,26 @@
 package graduation_service.graduation.service.graduationComparisonService;
 
-import graduation_service.graduation.domain.dto.GraduationResultDto;
+import graduation_service.graduation.dto.GraduationResultDto;
 import graduation_service.graduation.domain.entity.Course;
 import graduation_service.graduation.domain.entity.GraduationRequirements;
 import graduation_service.graduation.domain.enums.CourseType;
 import graduation_service.graduation.domain.enums.Department;
-import graduation_service.graduation.domain.enums.TestType;
 import graduation_service.graduation.domain.pojo.English;
 import graduation_service.graduation.service.CourseService;
 import graduation_service.graduation.service.GraduationRequirementService;
 import lombok.extern.slf4j.Slf4j;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.mock.web.MockMultipartFile;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import static graduation_service.graduation.domain.enums.Department.*;
 import static graduation_service.graduation.domain.enums.TestType.*;
-import static org.junit.jupiter.api.Assertions.*;
 
 @Slf4j
 @SpringBootTest

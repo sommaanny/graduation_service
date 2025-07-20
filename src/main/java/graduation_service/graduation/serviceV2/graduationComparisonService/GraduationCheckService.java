@@ -1,13 +1,13 @@
-package graduation_service.graduation.service.graduationComparisonService;
+package graduation_service.graduation.serviceV2.graduationComparisonService;
 
-import graduation_service.graduation.dto.CreditStatusDto;
-import graduation_service.graduation.dto.GraduationResultDto;
 import graduation_service.graduation.domain.entity.GraduationRequirements;
 import graduation_service.graduation.domain.entity.GraduationRequirementsCourses;
 import graduation_service.graduation.domain.enums.Department;
 import graduation_service.graduation.domain.pojo.English;
 import graduation_service.graduation.domain.pojo.Transcript;
-import graduation_service.graduation.service.GraduationRequirementService;
+import graduation_service.graduation.dto.CreditStatusDto;
+import graduation_service.graduation.dto.GraduationResultDto;
+import graduation_service.graduation.serviceV2.GraduationRequirementService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;

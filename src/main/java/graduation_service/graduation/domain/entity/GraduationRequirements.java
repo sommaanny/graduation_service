@@ -1,6 +1,6 @@
 package graduation_service.graduation.domain.entity;
 
-import graduation_service.graduation.domain.dto.GraduationRequirementUpdateDto;
+import graduation_service.graduation.dto.GraduationRequirementUpdateDto;
 import graduation_service.graduation.domain.enums.Department;
 import jakarta.persistence.*;
 import lombok.Getter;

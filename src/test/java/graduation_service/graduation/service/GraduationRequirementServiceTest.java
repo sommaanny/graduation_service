@@ -1,14 +1,12 @@
 package graduation_service.graduation.service;
 
-import graduation_service.graduation.domain.dto.GraduationRequirementUpdateDto;
+import graduation_service.graduation.dto.GraduationRequirementUpdateDto;
 import graduation_service.graduation.domain.entity.Course;
 import graduation_service.graduation.domain.entity.GraduationRequirements;
 import graduation_service.graduation.domain.entity.GraduationRequirementsCourses;
 import graduation_service.graduation.domain.enums.CourseType;
-import graduation_service.graduation.domain.enums.Department;
 import graduation_service.graduation.repository.GraduationRequirementCoursesRepository;
 import lombok.extern.slf4j.Slf4j;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -20,7 +18,6 @@ import java.util.Optional;
 import static graduation_service.graduation.domain.enums.CourseType.*;
 import static graduation_service.graduation.domain.enums.Department.*;
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
 
 @Slf4j
 @Transactional

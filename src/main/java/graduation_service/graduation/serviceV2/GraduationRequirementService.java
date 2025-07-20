@@ -1,11 +1,11 @@
-package graduation_service.graduation.service;
+package graduation_service.graduation.serviceV2;
 
-import graduation_service.graduation.dto.GraduationRequirementUpdateDto;
 import graduation_service.graduation.domain.entity.Course;
 import graduation_service.graduation.domain.entity.GraduationRequirements;
 import graduation_service.graduation.domain.entity.GraduationRequirementsCourses;
 import graduation_service.graduation.domain.enums.CourseType;
 import graduation_service.graduation.domain.enums.Department;
+import graduation_service.graduation.dto.GraduationRequirementUpdateDto;
 import graduation_service.graduation.repository.GraduationRequirementsRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

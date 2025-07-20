@@ -1,6 +1,8 @@
 package graduation_service.graduation.domain.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 
 import java.util.ArrayList;

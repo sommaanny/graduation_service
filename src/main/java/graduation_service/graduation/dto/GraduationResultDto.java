@@ -1,4 +1,4 @@
-package graduation_service.graduation.domain.dto;
+package graduation_service.graduation.dto;
 
 import graduation_service.graduation.domain.entity.GraduationRequirementsCourses;
 import lombok.Data;
