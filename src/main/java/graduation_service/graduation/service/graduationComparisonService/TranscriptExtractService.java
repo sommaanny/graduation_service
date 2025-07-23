@@ -13,7 +13,7 @@ import java.util.regex.Pattern;
 
 
 @Service
-public class TranscriptExtractor {
+public class TranscriptExtractService {
 
     public Transcript extract(MultipartFile file) throws IOException {
         InputStream inputStream = file.getInputStream();

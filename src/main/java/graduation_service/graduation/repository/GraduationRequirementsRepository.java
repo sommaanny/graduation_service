@@ -19,21 +19,31 @@ public class GraduationRequirementsRepository {
         em.persist(graduationRequirements);
     }
 
-    public GraduationRequirements findOne(Long id) {
-        return em.find(GraduationRequirements.class, id);
+    public Optional<GraduationRequirements> findOne(Long id, int graduationRequirementsYear) {
+        List<GraduationRequirements> result = em.createQuery("select g from GraduationRequirements g where g.graduationRequirementsYear = :graduationRequirementsYear " +
+                                "and g.id = :id"
+                        , GraduationRequirements.class)
+                .setParameter("graduationRequirementsYear", graduationRequirementsYear)
+                .setParameter("id", id)
+                .getResultList();
+
+        return result.stream().findFirst();
     }
 
-    public List<GraduationRequirements> findAll() {
-        return em.createQuery("select g from GraduationRequirements g", GraduationRequirements.class)
+    public List<GraduationRequirements> findAll(int graduationRequirementsYear) {
+        return em.createQuery("select g from GraduationRequirements g where g.graduationRequirementsYear = :graduationRequirementsYear", GraduationRequirements.class)
+                .setParameter("graduationRequirementsYear", graduationRequirementsYear)
                 .getResultList();
     }
 
     //학과별 졸업 요건은 하나이나 후에 졸업요건이 바뀌어 추가했을 경우 같은 학과의 졸업 요건이 두 개 이상 나올 수 있는
     // 예외 상황을 고려해 getSingleResult()가 아닌 getResultList()로 받아 첫 번째 값을 가져와 옵셔널로 감싸주어 반환하였다.
-    public Optional<GraduationRequirements> findByDepartment(Department department) {
-        List<GraduationRequirements> result = em.createQuery("select g from GraduationRequirements g where g.department = :department"
+    public Optional<GraduationRequirements> findByDepartment(Department department, int graduationRequirementsYear) {
+        List<GraduationRequirements> result = em.createQuery("select g from GraduationRequirements g where g.department = :department " +
+                                "and g.graduationRequirementsYear = :graduationRequirementsYear"
                         , GraduationRequirements.class)
                 .setParameter("department", department)
+                .setParameter("graduationRequirementsYear", graduationRequirementsYear)
                 .getResultList();
 
         return result.stream().findFirst(); //결과가 없으면 Optional.empty() 반환

@@ -21,16 +21,13 @@ import java.util.Set;
 @RequiredArgsConstructor
 public class GraduationCheckService {
 
-    private final TranscriptExtractor transcriptExtractor;
     private final CompletedCourseCheckService completedCourseCheckService;
     private final GraduationRequirementService graduationRequirementService;
 
-    public GraduationResultDto checkGraduation(MultipartFile file, English english, Department department) throws IOException {
-        //성적표 추출
-        Transcript transcript = transcriptExtractor.extract(file);
+    public GraduationResultDto checkGraduation(Transcript transcript, English english, int studentId, Department department) throws IOException {
 
         //졸업요건 조회
-        Optional<GraduationRequirements> findGr = graduationRequirementService.findByGRDepartment(department);
+        Optional<GraduationRequirements> findGr = graduationRequirementService.findByGRDepartment(department, 22);
         GraduationRequirements gr = findGr.orElseThrow(() -> new IllegalStateException("해당 학과의 졸업요건을 찾지 못했습니다."));
 
         //학점 충족 상태

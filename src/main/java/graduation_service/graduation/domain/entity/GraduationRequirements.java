@@ -19,12 +19,13 @@ public class GraduationRequirements {
     public GraduationRequirements() {
     }
 
-    public GraduationRequirements(Department department, int totalCreditsEarned, int majorCreditsEarned, int generalEducationCreditsEarned, float gpa) {
+    public GraduationRequirements(Department department, int totalCreditsEarned, int majorCreditsEarned, int generalEducationCreditsEarned, float gpa, int graduationRequirementsYear) {
         this.department = department;
         this.totalCreditsEarned = totalCreditsEarned;
         this.majorCreditsEarned = majorCreditsEarned;
         this.generalEducationCreditsEarned = generalEducationCreditsEarned;
         this.gpa = gpa;
+        this.graduationRequirementsYear = graduationRequirementsYear;
     }
 
     //이수해야 할 총 학점
@@ -33,11 +34,26 @@ public class GraduationRequirements {
     //이수해야 할 전공 학점
     private int majorCreditsEarned;
 
+    //이수해야 할 전공 필수 학점
+    private int requiredMajorCreditsEarned;
+
+    //이수해야 할 전공 선택 학점
+    private int electiveMajorCreditsEarned;
+
     //이수해야 할 교양 학점
     private int generalEducationCreditsEarned;
 
+    //이수해야 할 교양 필수 학점
+    private int requiredGeneralEducationCreditsEarned;
+
+    //이수해야 할 교양 선택 학점
+    private int electiveGeneralEducationCreditsEarned;
+
     //성적
     private float gpa;
+
+    //년도
+    private int graduationRequirementsYear;
 
     //학과
     @Column(unique = true)
@@ -64,4 +80,25 @@ public class GraduationRequirements {
         generalEducationCreditsEarned = updateDto.getGeneralEducationCreditsEarned(); //이수해야 할 교양 학점
         gpa = updateDto.getGpa();
     }
+
+    //졸업요건을 봤을 때 아래 항목들은 직접적으로 나타나있지 않고 관리자가 직접 계산해서 입력해야 하기에
+    //우선 졸업요건을 등록시에는 직접적으로 나타나있는 정보들만 생성자를 통해 등록하게끔 만들고 추 후 아래 항목을 셋팅한다.
+    //전공 필수, 전공 선택, 교양 필수, 교양 선택학점 셋팅
+
+    public void setRequiredMajorCreditsEarned(int requiredMajorCreditsEarned) {
+        this.requiredMajorCreditsEarned = requiredMajorCreditsEarned;
+    }
+
+    public void setElectiveMajorCreditsEarned(int electiveMajorCreditsEarned) {
+        this.electiveMajorCreditsEarned = electiveMajorCreditsEarned;
+    }
+
+    public void setRequiredGeneralEducationCreditsEarned(int requiredGeneralEducationCreditsEarned) {
+        this.requiredGeneralEducationCreditsEarned = requiredGeneralEducationCreditsEarned;
+    }
+
+    public void setElectiveGeneralEducationCreditsEarned(int electiveGeneralEducationCreditsEarned) {
+        this.electiveGeneralEducationCreditsEarned = electiveGeneralEducationCreditsEarned;
+    }
+
 }

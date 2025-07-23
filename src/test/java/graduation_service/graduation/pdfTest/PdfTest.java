@@ -56,15 +56,15 @@ public class PdfTest {
         courseService.addCourse(course4);
 
         //졸업요건 추가
-        GraduationRequirements gr = new GraduationRequirements(AI_ENGINEERING, 130, 65, 65, 3.0F);
-        Long saveId = grService.addGR(gr);
+        GraduationRequirements gr = new GraduationRequirements(AI_ENGINEERING, 130, 65, 65, 3.0F, 22);
+        Long saveId = grService.addGR(gr, 22);
 
 
         //졸업 요건에 과목추가
-        grService.addCourseToGraduationRequirement(saveId, course1, CourseType.MAJOR_REQUIRED);
-        grService.addCourseToGraduationRequirement(saveId, course2, CourseType.MAJOR_ELECTIVE);
-        grService.addCourseToGraduationRequirement(saveId, course3, CourseType.GENERAL_REQUIRED);
-        grService.addCourseToGraduationRequirement(saveId, course4, CourseType.GENERAL_ELECTIVE);
+        grService.addCourseToGraduationRequirement(saveId, 22, course1, CourseType.MAJOR_REQUIRED);
+        grService.addCourseToGraduationRequirement(saveId, 22, course2, CourseType.MAJOR_ELECTIVE);
+        grService.addCourseToGraduationRequirement(saveId, 22, course3, CourseType.GENERAL_REQUIRED);
+        grService.addCourseToGraduationRequirement(saveId, 22, course4, CourseType.GENERAL_ELECTIVE);
     }
 
     @Test

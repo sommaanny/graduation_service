@@ -1,5 +1,6 @@
 package graduation_service.graduation.service.graduationComparisonService;
 
+import graduation_service.graduation.domain.pojo.Transcript;
 import graduation_service.graduation.dto.GraduationResultDto;
 import graduation_service.graduation.domain.entity.Course;
 import graduation_service.graduation.domain.entity.GraduationRequirements;
@@ -35,6 +36,9 @@ class GraduationCheckServiceTest {
     @Autowired
     GraduationRequirementService grService;
 
+    @Autowired
+    TranscriptExtractService transcriptExtractService;
+
     @BeforeEach
     void setUp() {
         //과목추가
@@ -49,15 +53,15 @@ class GraduationCheckServiceTest {
         courseService.addCourse(course4);
 
         //졸업요건 추가
-        GraduationRequirements gr = new GraduationRequirements(AI_ENGINEERING, 130, 65, 65, 3.0F);
-        Long saveId = grService.addGR(gr);
+        GraduationRequirements gr = new GraduationRequirements(AI_ENGINEERING, 130, 65, 65, 3.0F, 22);
+        Long saveId = grService.addGR(gr, 22);
 
 
         //졸업 요건에 과목추가
-        grService.addCourseToGraduationRequirement(saveId, course1, CourseType.MAJOR_REQUIRED);
-        grService.addCourseToGraduationRequirement(saveId, course2, CourseType.MAJOR_REQUIRED);
-        grService.addCourseToGraduationRequirement(saveId, course3, CourseType.GENERAL_REQUIRED);
-        grService.addCourseToGraduationRequirement(saveId, course4, CourseType.GENERAL_REQUIRED);
+        grService.addCourseToGraduationRequirement(saveId, 22, course1, CourseType.MAJOR_REQUIRED);
+        grService.addCourseToGraduationRequirement(saveId, 22, course2, CourseType.MAJOR_REQUIRED);
+        grService.addCourseToGraduationRequirement(saveId, 22, course3, CourseType.GENERAL_REQUIRED);
+        grService.addCourseToGraduationRequirement(saveId, 22, course4, CourseType.GENERAL_REQUIRED);
     }
 
     @Test
@@ -81,8 +85,11 @@ class GraduationCheckServiceTest {
         //학부
         Department department = AI_ENGINEERING;
 
+        //성적표 추출
+        Transcript transcript = transcriptExtractService.extract(multipartFile);
+
         //졸업여부 체크
-        GraduationResultDto result = graduationCheckService.checkGraduation(multipartFile, english1, department);
+        GraduationResultDto result = graduationCheckService.checkGraduation(transcript, english1, 22, department); //학번
 
         log.info("졸업요건 만족 여부: " + result.isGraduated());
 

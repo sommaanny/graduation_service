@@ -10,9 +10,10 @@ public class English {
 
     private TestType testType;
 
+    private String gradeScore; //OPIC 점수
+
     private Float numericScore; //다른 시험 점수
 
-    private String gradeScore; //OPIC 점수
 
     public boolean isPassed() {
         //name() - enum 상수를 문자열로 반환하는 함수

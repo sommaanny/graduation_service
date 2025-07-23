@@ -33,12 +33,12 @@ class GraduationRequirementCoursesServiceTest {
         //given
         Course course = new Course("AIE-12235", "알고리즘", 3);
         GraduationRequirements graduationRequirements
-                = new GraduationRequirements(AI_ENGINEERING, 130, 65, 65, 3.0F);
+                = new GraduationRequirements(AI_ENGINEERING, 130, 65, 65, 3.0F, 22);
 
         Long courseId = courseService.addCourse(course);
-        Long grId = grService.addGR(graduationRequirements);
+        Long grId = grService.addGR(graduationRequirements, 22);
 
-        grService.addCourseToGraduationRequirement(grId, course, MAJOR_REQUIRED);
+        grService.addCourseToGraduationRequirement(grId, 22, course, MAJOR_REQUIRED);
 
         //when
         List<GraduationRequirementsCourses> allGrc = grcService.findAllGrc(AI_ENGINEERING);

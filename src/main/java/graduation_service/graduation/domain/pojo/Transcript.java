@@ -44,5 +44,4 @@ public class Transcript {
     //이수 과목들의 학수번호들
     private Set<String> completedCourseNumbers = new HashSet<>();
 
-
 }

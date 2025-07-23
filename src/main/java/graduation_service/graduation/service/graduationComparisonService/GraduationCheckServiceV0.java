@@ -40,7 +40,7 @@ public class GraduationCheckServiceV0 {
         English english = inputEnglish(); //영어성적 입력
 
         //비교 로직
-        Optional<GraduationRequirements> findGR = graduationRequirementsRepository.findByDepartment(department);
+        Optional<GraduationRequirements> findGR = graduationRequirementsRepository.findByDepartment(department, 22);
 
         return true;
     }
