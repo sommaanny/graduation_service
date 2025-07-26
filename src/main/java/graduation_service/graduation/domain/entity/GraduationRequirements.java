@@ -1,5 +1,6 @@
 package graduation_service.graduation.domain.entity;
 
+import graduation_service.graduation.domain.enums.CoreType;
 import graduation_service.graduation.dto.GraduationRequirementUpdateDto;
 import graduation_service.graduation.domain.enums.Department;
 import jakarta.persistence.*;
@@ -60,6 +61,15 @@ public class GraduationRequirements {
     @Enumerated(EnumType.STRING)
     private Department department;
 
+    //이수해야 할 핵심교양 타입
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(
+            name = "required_core_types",
+            joinColumns = @JoinColumn(name = "graduation_requirements_id")
+    )
+    @Enumerated(EnumType.STRING)
+    private List<CoreType> coreTypes = new ArrayList<>();
+
     //mappedBy -> 연관관계 주인 지정(주인이 아닌 엔티티는 readOnly)
     //cascade는 연관된 엔티티를 함께 저장, 수정, 삭제할 때 사용
     //여기서는 CascadeType.ALL
@@ -100,5 +110,7 @@ public class GraduationRequirements {
     public void setElectiveGeneralEducationCreditsEarned(int electiveGeneralEducationCreditsEarned) {
         this.electiveGeneralEducationCreditsEarned = electiveGeneralEducationCreditsEarned;
     }
+
+
 
 }

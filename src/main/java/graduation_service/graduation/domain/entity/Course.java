@@ -12,7 +12,8 @@ import java.util.List;
 @Getter
 public class Course {
 
-    @Id @GeneratedValue
+    @Id
+    @GeneratedValue
     @Column(name = "course_id")
     private Long id;
 
@@ -42,5 +43,8 @@ public class Course {
 
     @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<GraduationRequirementsCourses> graduationRequirementsCourses = new ArrayList<>();
+
+    @OneToMany(mappedBy = "course", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private List<CoreSubjectCurriculum> coreSubjectCurriculumList = new ArrayList<>();
 
 }

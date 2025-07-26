@@ -1,45 +1,45 @@
 package graduation_service.graduation.service.graduationComparisonService;
 
-import graduation_service.graduation.domain.pojo.Transcript;
-import graduation_service.graduation.dto.GraduationResultDto;
+import graduation_service.graduation.domain.entity.CoreSubjectCurriculum;
 import graduation_service.graduation.domain.entity.Course;
 import graduation_service.graduation.domain.entity.GraduationRequirements;
+import graduation_service.graduation.domain.enums.CoreType;
 import graduation_service.graduation.domain.enums.CourseType;
-import graduation_service.graduation.domain.enums.Department;
-import graduation_service.graduation.domain.pojo.English;
+import graduation_service.graduation.repository.CoreSubjectCurriculumRepository;
 import graduation_service.graduation.service.CourseService;
 import graduation_service.graduation.service.GraduationRequirementService;
 import lombok.extern.slf4j.Slf4j;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
+import java.util.List;
+import java.util.Optional;
 
-import static graduation_service.graduation.domain.enums.Department.*;
-import static graduation_service.graduation.domain.enums.TestType.*;
+import static graduation_service.graduation.domain.enums.CoreType.CORE_1;
+import static graduation_service.graduation.domain.enums.Department.AI_ENGINEERING;
+import static org.assertj.core.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 @Slf4j
 @Transactional
 @SpringBootTest
-class GraduationCheckServiceTest {
+class CoreSubjectServiceTest {
 
     @Autowired
-    GraduationCheckService graduationCheckService;
+    CoreSubjectService coreSubjectService;
+
+    @Autowired
+    CoreSubjectCurriculumRepository coreSubjectCurriculumRepository;
 
     @Autowired
     CourseService courseService;
 
     @Autowired
     GraduationRequirementService grService;
-
-    @Autowired
-    TranscriptExtractService transcriptExtractService;
 
     @BeforeEach
     void setUp() {
@@ -58,7 +58,6 @@ class GraduationCheckServiceTest {
         GraduationRequirements gr = new GraduationRequirements(AI_ENGINEERING, 130, 65, 65, 3.0F, 22);
         Long saveId = grService.addGR(gr, 22);
 
-
         //졸업 요건에 과목추가
         grService.addCourseToGraduationRequirement(saveId, 22, course1, CourseType.MAJOR_REQUIRED);
         grService.addCourseToGraduationRequirement(saveId, 22, course2, CourseType.MAJOR_REQUIRED);
@@ -67,33 +66,32 @@ class GraduationCheckServiceTest {
     }
 
     @Test
-    void 졸업요건_진단() throws IOException {
-
-        File file = new File("src/test/resources/sample-transcript.pdf");
-        FileInputStream input = new FileInputStream(file);
-
-        //성적표 파일
-        MockMultipartFile multipartFile = new MockMultipartFile(
-                "file",                   // 파라미터 이름 (폼 필드 이름)
-                file.getName(),                 // 파일 이름
-                "application/pdf",             // Content-Type
-                input                          // 파일 데이터 스트림
-        );
-
-        //영어점수
-        English english1 = new English(TOEIC, 900); //토익
-        English english2 = new English(OPIC, "IM2"); //오픽
-
-        //학부
-        Department department = AI_ENGINEERING;
-
-        //성적표 추출
-        Transcript transcript = transcriptExtractService.extract(multipartFile);
-
-        //졸업여부 체크
-        GraduationResultDto result = graduationCheckService.checkGraduation(transcript, english1, 22, department); //학번
-
-        log.info(result.toString());
-
+    void DB_데이터_확인() {
+        List<CoreSubjectCurriculum> all = coreSubjectCurriculumRepository.findAll();
+        for (CoreSubjectCurriculum coreSubjectCurriculum : all) {
+            log.info("과목 확인: " + coreSubjectCurriculum.getCourse().getCourseTitle());
+        }
     }
+
+    @Test
+    void save() {
+        //given
+        Course findCourse = courseService.findByCourseNumber("GED2010").get();
+
+        CoreSubjectCurriculum coreSubjectCurriculum = new CoreSubjectCurriculum();
+        coreSubjectCurriculum.setCurriculumYear(22);
+        coreSubjectCurriculum.setCoreType(CORE_1);
+        coreSubjectCurriculum.assignCourse(findCourse);
+
+        //when
+        Long saveId = coreSubjectService.addCoreSubjectCurriculum(coreSubjectCurriculum);
+
+
+        //then
+        CoreSubjectCurriculum find = coreSubjectService.findById(saveId);
+        assertThat(find.getId()).isEqualTo(saveId);
+    }
+
+
+
 }
