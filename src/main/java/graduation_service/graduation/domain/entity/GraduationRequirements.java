@@ -111,6 +111,24 @@ public class GraduationRequirements {
         this.electiveGeneralEducationCreditsEarned = electiveGeneralEducationCreditsEarned;
     }
 
+    //핵심교양 추가
+    public void addCoreType(CoreType coreType) {
+        coreTypes.add(coreType);
+    }
 
+    //제약조건
+    public void validateCreditsConsistency() {
+        if (totalCreditsEarned != majorCreditsEarned + generalEducationCreditsEarned) {
+            throw new IllegalStateException("총 학점이 전공 + 교양 학점과 일치하지 않습니다.");
+        }
+
+        if (majorCreditsEarned != requiredMajorCreditsEarned + electiveMajorCreditsEarned) {
+            throw new IllegalStateException("전공 학점이 전공 필수 + 전공 선택 학점과 일치하지 않습니다.");
+        }
+
+        if (generalEducationCreditsEarned != requiredGeneralEducationCreditsEarned + electiveGeneralEducationCreditsEarned) {
+            throw new IllegalStateException("교양 학점이 교양 필수 + 교양 선택 학점과 일치하지 않습니다.");
+        }
+    }
 
 }

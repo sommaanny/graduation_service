@@ -35,6 +35,8 @@ public class GraduationCheckService {
         if (transcript.getTotalTransferredCredits() != 0) {
             transcript.setElectiveMajorCredits(transcript.getElectiveMajorCredits() + transferredMajorCredits); //편입 전공 기존 전공선택 학점에 합산
             transcript.setElectiveGeneralEducationCredits(transcript.getElectiveGeneralEducationCredits() + transferredGeneralCredits); //편입 전공 기존 교양선택 학점에 합산
+            transcript.setTransferredMajorCredits(0);
+            transcript.setTotalTransferredCredits(0);
         }
 
         //졸업요건 조회
@@ -49,7 +51,8 @@ public class GraduationCheckService {
         List<CoreType> remainingCoreTypes = checkRemainingCoreTypes(transcript, gr);
 
         //이수 못한 과목 없는지 확인(핵심교양 제외)
-        List<GraduationRequirementsCourses> remainingCourses = checkRemainingCourses(transcript, gr);
+        int missingElectiveMajorCredits = creditStatus.getMissingElectiveMajorCredits(); //모자른 전선학점
+        List<GraduationRequirementsCourses> remainingCourses = checkRemainingCourses(transcript, gr, missingElectiveMajorCredits);
         boolean coursePassed = remainingCourses.isEmpty();
 
         //영어 성적 만족하는지
@@ -69,11 +72,11 @@ public class GraduationCheckService {
     }
 
     //이수 못한 과목 반환
-    public List<GraduationRequirementsCourses> checkRemainingCourses(Transcript transcript, GraduationRequirements gr) throws IOException {
+    public List<GraduationRequirementsCourses> checkRemainingCourses(Transcript transcript, GraduationRequirements gr, int missingElectiveMajorCredits) throws IOException {
         Set<String> completedCourseNumbers = transcript.getCompletedCourseNumbers(); // 이수과목들 추출
 
         // 졸업요건과 비교하여 이수 못한 과목들 반환
-        return completedCourseCheckService.checkCompletedCourses(completedCourseNumbers, gr);
+        return completedCourseCheckService.checkCompletedCourses(completedCourseNumbers, gr, missingElectiveMajorCredits);
     }
 
     //이수한 학점 체크

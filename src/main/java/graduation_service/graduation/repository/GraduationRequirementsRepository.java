@@ -16,6 +16,7 @@ public class GraduationRequirementsRepository {
     private final EntityManager em;
 
     public void save(GraduationRequirements graduationRequirements) {
+        graduationRequirements.validateCreditsConsistency();
         em.persist(graduationRequirements);
     }
 

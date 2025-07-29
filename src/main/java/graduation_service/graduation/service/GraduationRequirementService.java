@@ -1,5 +1,6 @@
 package graduation_service.graduation.service;
 
+import graduation_service.graduation.domain.enums.CoreType;
 import graduation_service.graduation.dto.GraduationRequirementUpdateDto;
 import graduation_service.graduation.domain.entity.Course;
 import graduation_service.graduation.domain.entity.GraduationRequirements;
@@ -49,6 +50,13 @@ public class GraduationRequirementService {
         gr.addGraduationRequirementsCourses(grc);
     }
 
+    //졸업요건에 핵심교양 조건 추가
+    @Transactional
+    public void addCoreSubjectTypes(Long grId, int year, CoreType coreType) {
+        GraduationRequirements graduationRequirements = findGR(grId, year);
+        graduationRequirements.addCoreType(coreType);
+    }
+
     //조회
     public GraduationRequirements findGR(Long id, int year) {
         return graduationRequirementsRepository.findOne(id, year).orElseThrow(() -> new NoSuchElementException("졸업 요건을 찾을 수 없습니다."));
@@ -80,6 +88,7 @@ public class GraduationRequirementService {
         GraduationRequirements gr = findGR(id, year);
         gr.updateGraduationRequirement(updateDto);
     }
+
 
 
 }

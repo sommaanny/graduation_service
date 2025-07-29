@@ -20,13 +20,13 @@ public class GraduationRequirementCoursesService {
     //저장 로직은 졸업요건 서비스에 존재함으로 따로 만들 필요가 없다.
 
     //특정 학과의 졸업요건 과목 전체 조회
-    public List<GraduationRequirementsCourses> findAllGrc(Department department) {
-        return grcRepository.findAll(department);
+    public List<GraduationRequirementsCourses> findAllGrc(Department department, int year) {
+        return grcRepository.findAll(department, year);
     }
 
     //특정 학과의 졸업요건 과목 중 과목 타입(전공, 교양 ..)으로 조회
-    public List<GraduationRequirementsCourses> findGrcByCourseType(Department department, CourseType courseType) {
-        return grcRepository.findByCourseType(department, courseType);
+    public List<GraduationRequirementsCourses> findGrcByCourseType(Department department, CourseType courseType, int year) {
+        return grcRepository.findByCourseType(department, courseType, year);
     }
 
 }

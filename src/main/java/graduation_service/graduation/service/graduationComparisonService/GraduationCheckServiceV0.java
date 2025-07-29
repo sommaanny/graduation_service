@@ -140,7 +140,7 @@ public class GraduationCheckServiceV0 {
     //이수과목 세부확인
     private List<GraduationRequirementsCourses> checkCourse(Set<String> courseNumberSet) {
         //학과 졸업요건 과목 불러오기
-        List<GraduationRequirementsCourses> allGrc = grcService.findAllGrc(AI_ENGINEERING);
+        List<GraduationRequirementsCourses> allGrc = grcService.findAllGrc(AI_ENGINEERING, 22);
 
         return allGrc.stream()
                 .filter(grc -> !courseNumberSet.contains(grc.getCourse().getCourseNumber()))

@@ -85,7 +85,7 @@ public class TranscriptExtractService {
                         //22. 종합 성적
                         float input = Float.parseFloat(credit);
                         transcript.setGpa(input);
-                    } else if (j == i + 24) {
+                    } else if (j == i + 23) {
                         //24. 편입인정학점(전공/전체)
                         String[] result = credit.split("/");
                         int major = Integer.parseInt(result[0]); //전공

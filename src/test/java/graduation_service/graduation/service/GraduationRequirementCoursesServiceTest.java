@@ -41,8 +41,8 @@ class GraduationRequirementCoursesServiceTest {
         grService.addCourseToGraduationRequirement(grId, 22, course, MAJOR_REQUIRED);
 
         //when
-        List<GraduationRequirementsCourses> allGrc = grcService.findAllGrc(AI_ENGINEERING);
-        List<GraduationRequirementsCourses> grcByCourseType = grcService.findGrcByCourseType(AI_ENGINEERING, MAJOR_REQUIRED);
+        List<GraduationRequirementsCourses> allGrc = grcService.findAllGrc(AI_ENGINEERING, 22);
+        List<GraduationRequirementsCourses> grcByCourseType = grcService.findGrcByCourseType(AI_ENGINEERING, MAJOR_REQUIRED, 22);
 
         //then
 
