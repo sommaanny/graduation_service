@@ -1,4 +1,4 @@
-package graduation_service.graduation.service.graduationComparisonService;
+package graduation_service.graduation.serviceV0.graduationComparisonService;
 
 import graduation_service.graduation.domain.entity.CoreSubjectCurriculum;
 import graduation_service.graduation.domain.entity.Course;
@@ -7,10 +7,9 @@ import graduation_service.graduation.domain.enums.CoreType;
 import graduation_service.graduation.domain.enums.CourseType;
 import graduation_service.graduation.domain.pojo.Transcript;
 import graduation_service.graduation.repository.CoreSubjectCurriculumRepository;
-import graduation_service.graduation.service.CourseService;
-import graduation_service.graduation.service.GraduationRequirementService;
+import graduation_service.graduation.serviceV0.CourseService;
+import graduation_service.graduation.serviceV0.GraduationRequirementService;
 import lombok.extern.slf4j.Slf4j;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +19,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
@@ -29,7 +27,6 @@ import java.util.Set;
 import static graduation_service.graduation.domain.enums.CoreType.*;
 import static graduation_service.graduation.domain.enums.Department.AI_ENGINEERING;
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
 
 @Slf4j
 @Transactional

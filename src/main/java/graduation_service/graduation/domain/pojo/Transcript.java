@@ -1,5 +1,6 @@
 package graduation_service.graduation.domain.pojo;
 
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -7,7 +8,7 @@ import lombok.ToString;
 import java.util.HashSet;
 import java.util.Set;
 
-@Getter @Setter
+@Data
 @ToString
 public class Transcript {
 

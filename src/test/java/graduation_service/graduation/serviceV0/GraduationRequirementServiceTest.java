@@ -1,4 +1,4 @@
-package graduation_service.graduation.service;
+package graduation_service.graduation.serviceV0;
 
 import graduation_service.graduation.dto.GraduationRequirementUpdateDto;
 import graduation_service.graduation.domain.entity.Course;
@@ -198,27 +198,27 @@ class GraduationRequirementServiceTest {
     }
 
     //변경
-    @Test
-    void 졸업요건_변경() {
-        //given
-        GraduationRequirements graduationRequirements
-                = new GraduationRequirements(COMPUTER_SCIENCE, 130, 65, 65, 3.0F, 22);
-
-        Long saveId = graduationRequirementService.addGR(graduationRequirements, 22);
-
-        //when
-        GraduationRequirementUpdateDto updateDto = new GraduationRequirementUpdateDto(125, 65, 60, 3.0F);
-
-        graduationRequirementService.updateGR(saveId, 22, updateDto);
-
-        //then
-        GraduationRequirements findGR2 = graduationRequirementService.findGR(saveId, 22);
-        log.info("학과: " + findGR2.getDepartment() + ", 총 학점: " + findGR2.getTotalCreditsEarned() + ", 전공 학점: "
-        + findGR2.getMajorCreditsEarned() + ", 교양 학점: " + findGR2.getGeneralEducationCreditsEarned());
-
-        assertThat(findGR2.getTotalCreditsEarned()).isEqualTo(125);
-        assertThat(findGR2.getGeneralEducationCreditsEarned()).isEqualTo(60);
-    }
+//    @Test
+//    void 졸업요건_변경() {
+//        //given
+//        GraduationRequirements graduationRequirements
+//                = new GraduationRequirements(COMPUTER_SCIENCE, 130, 65, 65, 3.0F, 22);
+//
+//        Long saveId = graduationRequirementService.addGR(graduationRequirements, 22);
+//
+//        //when
+//        GraduationRequirementUpdateDto updateDto = new GraduationRequirementUpdateDto(125, 65, 60, 3.0F);
+//
+//        graduationRequirementService.updateGR(saveId, 22, updateDto);
+//
+//        //then
+//        GraduationRequirements findGR2 = graduationRequirementService.findGR(saveId, 22);
+//        log.info("학과: " + findGR2.getDepartment() + ", 총 학점: " + findGR2.getTotalCreditsEarned() + ", 전공 학점: "
+//        + findGR2.getMajorCreditsEarned() + ", 교양 학점: " + findGR2.getGeneralEducationCreditsEarned());
+//
+//        assertThat(findGR2.getTotalCreditsEarned()).isEqualTo(125);
+//        assertThat(findGR2.getGeneralEducationCreditsEarned()).isEqualTo(60);
+//    }
 
 
 

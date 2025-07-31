@@ -1,4 +1,4 @@
-package graduation_service.graduation.service.graduationComparisonService;
+package graduation_service.graduation.serviceV0.graduationComparisonService;
 
 import graduation_service.graduation.domain.entity.GraduationRequirementsCourses;
 import graduation_service.graduation.domain.enums.CoreType;
@@ -9,8 +9,8 @@ import graduation_service.graduation.domain.entity.GraduationRequirements;
 import graduation_service.graduation.domain.enums.CourseType;
 import graduation_service.graduation.domain.enums.Department;
 import graduation_service.graduation.domain.pojo.English;
-import graduation_service.graduation.service.CourseService;
-import graduation_service.graduation.service.GraduationRequirementService;
+import graduation_service.graduation.serviceV0.CourseService;
+import graduation_service.graduation.serviceV0.GraduationRequirementService;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

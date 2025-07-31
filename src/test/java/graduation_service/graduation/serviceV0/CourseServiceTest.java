@@ -1,4 +1,4 @@
-package graduation_service.graduation.service;
+package graduation_service.graduation.serviceV0;
 
 import graduation_service.graduation.domain.entity.Course;
 import lombok.extern.slf4j.Slf4j;
@@ -10,8 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @Slf4j
 @Transactional //Test에서 Transaction은 함수 실행 후 롤백되기에 디비에 데이터가 남아있는 것을 방지한다.

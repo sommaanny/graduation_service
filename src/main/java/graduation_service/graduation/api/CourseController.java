@@ -1,7 +1,7 @@
 package graduation_service.graduation.api;
 
 import graduation_service.graduation.domain.entity.Course;
-import graduation_service.graduation.service.CourseService;
+import graduation_service.graduation.serviceV0.CourseService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;

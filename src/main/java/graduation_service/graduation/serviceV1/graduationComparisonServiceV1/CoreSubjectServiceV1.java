@@ -1,13 +1,11 @@
-package graduation_service.graduation.service.graduationComparisonService;
+package graduation_service.graduation.serviceV1.graduationComparisonServiceV1;
 
 import graduation_service.graduation.domain.entity.CoreSubjectCurriculum;
 import graduation_service.graduation.domain.entity.Course;
 import graduation_service.graduation.domain.entity.GraduationRequirements;
 import graduation_service.graduation.domain.enums.CoreType;
-import graduation_service.graduation.domain.enums.Department;
 import graduation_service.graduation.repository.CoreSubjectCurriculumRepository;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,7 +14,7 @@ import java.util.*;
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
-public class CoreSubjectService {
+public class CoreSubjectServiceV1 {
 
     private final CoreSubjectCurriculumRepository coreSubjectCurriculumRepository;
 

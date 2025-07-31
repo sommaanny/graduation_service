@@ -1,4 +1,4 @@
-package graduation_service.graduation.service.graduationComparisonService;
+package graduation_service.graduation.serviceV0.graduationComparisonService;
 
 import graduation_service.graduation.domain.enums.CoreType;
 import graduation_service.graduation.dto.CreditStatusDto;
@@ -8,7 +8,7 @@ import graduation_service.graduation.domain.entity.GraduationRequirementsCourses
 import graduation_service.graduation.domain.enums.Department;
 import graduation_service.graduation.domain.pojo.English;
 import graduation_service.graduation.domain.pojo.Transcript;
-import graduation_service.graduation.service.GraduationRequirementService;
+import graduation_service.graduation.serviceV0.GraduationRequirementService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

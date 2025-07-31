@@ -4,22 +4,26 @@ import graduation_service.graduation.domain.enums.CoreType;
 import graduation_service.graduation.dto.GraduationRequirementUpdateDto;
 import graduation_service.graduation.domain.enums.Department;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Getter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class GraduationRequirements {
 
     @Id @GeneratedValue
     @Column(name = "graduation_requirements_id")
     private Long id;
 
-    public GraduationRequirements() {
-    }
-
+    //리팩토리전 사용하던 생성자
     public GraduationRequirements(Department department, int totalCreditsEarned, int majorCreditsEarned, int generalEducationCreditsEarned, float gpa, int graduationRequirementsYear) {
         this.department = department;
         this.totalCreditsEarned = totalCreditsEarned;
@@ -62,6 +66,7 @@ public class GraduationRequirements {
     private Department department;
 
     //이수해야 할 핵심교양 타입
+    @Builder.Default
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(
             name = "required_core_types",
@@ -74,6 +79,7 @@ public class GraduationRequirements {
     //cascade는 연관된 엔티티를 함께 저장, 수정, 삭제할 때 사용
     //여기서는 CascadeType.ALL
     // orphanRemoval = true 부모 엔티티와의 연관이 끊어졌을 때 자식 엔티티 자동 삭제
+    @Builder.Default
     @OneToMany(mappedBy = "graduationRequirements", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<GraduationRequirementsCourses> graduationRequirementsCourses = new ArrayList<>();
 
@@ -87,7 +93,11 @@ public class GraduationRequirements {
     public void updateGraduationRequirement(GraduationRequirementUpdateDto updateDto) {
         totalCreditsEarned = updateDto.getTotalCreditsEarned(); //이수해야 할 총 학점
         majorCreditsEarned = updateDto.getMajorCreditsEarned(); //이수해야 할 전공 학점
+        requiredMajorCreditsEarned = updateDto.getRequiredMajorCredits(); //이수해야 할 전공 필수 학점
+        electiveMajorCreditsEarned = majorCreditsEarned - requiredMajorCreditsEarned;  //이수해야 할 전공 선택 학점
         generalEducationCreditsEarned = updateDto.getGeneralEducationCreditsEarned(); //이수해야 할 교양 학점
+        requiredGeneralEducationCreditsEarned = updateDto.getRequiredGeneralEducationCredits(); //이수해야 할 교양 필수학점
+        electiveGeneralEducationCreditsEarned = generalEducationCreditsEarned - requiredGeneralEducationCreditsEarned; //이수해야 할 교양 선택학점
         gpa = updateDto.getGpa();
     }
 

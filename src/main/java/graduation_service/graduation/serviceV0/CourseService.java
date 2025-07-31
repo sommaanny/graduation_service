@@ -1,4 +1,4 @@
-package graduation_service.graduation.service;
+package graduation_service.graduation.serviceV0;
 
 import graduation_service.graduation.domain.entity.Course;
 import graduation_service.graduation.repository.CourseRepository;
