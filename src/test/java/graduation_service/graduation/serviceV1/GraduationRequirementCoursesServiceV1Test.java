@@ -55,7 +55,7 @@ class GraduationRequirementCoursesServiceV1Test {
                         .graduationRequirementsYear(22)
                         .build();
 
-        GraduationRequirementResponse graduationRequirementResponse = grService.addGR(graduationRequirementCreateRequest, 22);
+        GraduationRequirementResponse graduationRequirementResponse = grService.addGR(graduationRequirementCreateRequest);
 
         CourseRequest courseRequest = new CourseRequest(courseResponse.getId(), MAJOR_REQUIRED);
 

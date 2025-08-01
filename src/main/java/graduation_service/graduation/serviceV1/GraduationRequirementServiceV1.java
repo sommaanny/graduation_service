@@ -29,8 +29,9 @@ public class GraduationRequirementServiceV1 {
 
     //저장
     @Transactional
-    public GraduationRequirementResponse addGR(GraduationRequirementCreateRequest graduationRequirementCreateRequest, int year) {
+    public GraduationRequirementResponse addGR(GraduationRequirementCreateRequest graduationRequirementCreateRequest) {
         GraduationRequirements graduationRequirement = graduationRequirementCreateRequest.toEntity();
+        int year = graduationRequirement.getGraduationRequirementsYear();
 
         validateDuplicateGR(graduationRequirement, year); //중복 검증
         graduationRequirementsRepository.save(graduationRequirement);

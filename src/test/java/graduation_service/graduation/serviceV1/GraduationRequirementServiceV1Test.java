@@ -67,7 +67,7 @@ class GraduationRequirementServiceV1Test {
                 .build();
 
         //when
-        GraduationRequirementResponse response = graduationRequirementService.addGR(request, 22);
+        GraduationRequirementResponse response = graduationRequirementService.addGR(request);
 
         //then
         assertThat(response.getDepartment()).isEqualTo(COMPUTER_SCIENCE);
@@ -89,10 +89,10 @@ class GraduationRequirementServiceV1Test {
                 .graduationRequirementsYear(22)
                 .build();
 
-        graduationRequirementService.addGR(request, 22);
+        graduationRequirementService.addGR(request);
 
         //when then
-        assertThatThrownBy(() -> graduationRequirementService.addGR(request, 22))
+        assertThatThrownBy(() -> graduationRequirementService.addGR(request))
                 .isInstanceOf(IllegalStateException.class)
                 .hasMessageContaining("이미 존재하는 학과의 졸업요건입니다");
     }
@@ -117,7 +117,7 @@ class GraduationRequirementServiceV1Test {
                 .graduationRequirementsYear(22)
                 .build();
 
-        GraduationRequirementResponse grResponse = graduationRequirementService.addGR(grRequest, 22);
+        GraduationRequirementResponse grResponse = graduationRequirementService.addGR(grRequest);
 
         //when
         CourseRequest courseRequest = new CourseRequest(courseResponse.getId(), MAJOR_REQUIRED);
@@ -143,7 +143,7 @@ class GraduationRequirementServiceV1Test {
                 .graduationRequirementsYear(22)
                 .build();
 
-        GraduationRequirementResponse response = graduationRequirementService.addGR(request, 22);
+        GraduationRequirementResponse response = graduationRequirementService.addGR(request);
 
         //when
         GraduationRequirementResponse find = graduationRequirementService.findGR(response.getId(), 22);
@@ -167,7 +167,7 @@ class GraduationRequirementServiceV1Test {
                 .graduationRequirementsYear(22)
                 .build();
 
-        GraduationRequirementResponse response = graduationRequirementService.addGR(request, 22);
+        GraduationRequirementResponse response = graduationRequirementService.addGR(request);
 
         //when
         GraduationRequirementResponse findGR = graduationRequirementService.findByGRDepartment(COMPUTER_SCIENCE, 22);
@@ -203,8 +203,8 @@ class GraduationRequirementServiceV1Test {
                 .graduationRequirementsYear(22)
                 .build();
 
-        graduationRequirementService.addGR(request1, 22);
-        graduationRequirementService.addGR(request2, 22);
+        graduationRequirementService.addGR(request1);
+        graduationRequirementService.addGR(request2);
 
         //when
         List<GraduationRequirementResponse> allGR = graduationRequirementService.findAllGR(22);
@@ -229,7 +229,7 @@ class GraduationRequirementServiceV1Test {
                 .graduationRequirementsYear(22)
                 .build();
 
-        GraduationRequirementResponse response = graduationRequirementService.addGR(request, 22);
+        GraduationRequirementResponse response = graduationRequirementService.addGR(request);
 
         //when
         graduationRequirementService.deleteGR(response.getId(), 22);
@@ -263,7 +263,7 @@ class GraduationRequirementServiceV1Test {
                 .graduationRequirementsYear(22)
                 .build();
 
-        GraduationRequirementResponse response = graduationRequirementService.addGR(request, 22);
+        GraduationRequirementResponse response = graduationRequirementService.addGR(request);
 
         //when
         GraduationRequirementUpdateDto updateDto = GraduationRequirementUpdateDto.builder()

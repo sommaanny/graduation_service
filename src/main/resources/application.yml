@@ -8,6 +8,12 @@ spring:
     naming:
       physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategySnakeCaseImpl
 
+    http:
+      encoding:
+        enabled: true
+        charset: UTF-8
+        force: true
+
 
 logging.level:
   org.hibernate.SQL: debug

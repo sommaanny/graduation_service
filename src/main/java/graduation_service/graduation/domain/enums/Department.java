@@ -4,8 +4,8 @@ import java.util.Arrays;
 
 public enum Department {
     COMPUTER_SCIENCE("computer-science"),
-    AI_ENGINEERING("ai_engineering"),
-    DATA_SCIENCE("data_science");
+    AI_ENGINEERING("ai-engineering"),
+    DATA_SCIENCE("data-science");
 
     private final String urlName;
 
