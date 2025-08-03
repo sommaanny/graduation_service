@@ -2,7 +2,10 @@ package graduation_service.graduation.domain.entity;
 
 import graduation_service.graduation.domain.enums.CoreType;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
@@ -10,6 +13,8 @@ import lombok.Getter;
         name = "core_subject_curriculum",
         uniqueConstraints = @UniqueConstraint(columnNames = {"course_id", "curriculum_year"})
 )
+@NoArgsConstructor
+@AllArgsConstructor
 public class CoreSubjectCurriculum {
 
     @Id @GeneratedValue
@@ -25,8 +30,6 @@ public class CoreSubjectCurriculum {
     @JoinColumn(name = "course_id")
     private Course course;
 
-    public CoreSubjectCurriculum() {
-    }
 
     public void setCoreType(CoreType coreType) {
         this.coreType = coreType;

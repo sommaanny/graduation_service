@@ -8,7 +8,9 @@ import graduation_service.graduation.domain.enums.Department;
 import graduation_service.graduation.dto.GraduationRequirementUpdateDto;
 import graduation_service.graduation.dto.requestDto.courseDto.CourseRequest;
 import graduation_service.graduation.dto.requestDto.graduationRequirementDto.GraduationRequirementCreateRequest;
-import graduation_service.graduation.dto.responseDto.GraduationRequirementResponse;
+import graduation_service.graduation.dto.responseDto.graduationResponse.GraduationCoreSubjectCreateResponse;
+import graduation_service.graduation.dto.responseDto.graduationResponse.GraduationCourseCreateResponse;
+import graduation_service.graduation.dto.responseDto.graduationResponse.GraduationRequirementResponse;
 import graduation_service.graduation.repository.CourseRepository;
 import graduation_service.graduation.repository.GraduationRequirementsRepository;
 import lombok.RequiredArgsConstructor;
@@ -49,7 +51,7 @@ public class GraduationRequirementServiceV1 {
 
     //졸업요건 과목 추가
     @Transactional
-    public void addCourseToGraduationRequirement(Long grId, int year, CourseRequest courseRequest) {
+    public GraduationCourseCreateResponse addCourseToGraduationRequirement(Long grId, int year, CourseRequest courseRequest) {
         Course course = courseRepository.findOne(courseRequest.getCourseId());
 
         if (course == null) {
@@ -62,13 +64,17 @@ public class GraduationRequirementServiceV1 {
 
         GraduationRequirements gr = graduationRequirementsRepository.findOne(grId, year).orElseThrow(() -> new NoSuchElementException("졸업 요건을 찾을 수 없습니다."));
         gr.addGraduationRequirementsCourses(grc);
+
+        return new GraduationCourseCreateResponse(grId, year, courseRequest.getCourseId(), courseRequest.getCourseType());
     }
 
     //졸업요건에 핵심교양 조건 추가
     @Transactional
-    public void addCoreSubjectTypes(Long grId, int year, CoreType coreType) {
+    public GraduationCoreSubjectCreateResponse addCoreSubjectTypes(Long grId, int year, CoreType coreType) {
         GraduationRequirements graduationRequirements = graduationRequirementsRepository.findOne(grId, year).orElseThrow(() -> new NoSuchElementException("졸업 요건을 찾을 수 없습니다."));
         graduationRequirements.addCoreType(coreType);
+
+        return new GraduationCoreSubjectCreateResponse(grId, year, coreType);
     }
 
     //조회
@@ -111,7 +117,6 @@ public class GraduationRequirementServiceV1 {
         gr.updateGraduationRequirement(updateDto);
         gr.validateCreditsConsistency();
     }
-
 
 
 }

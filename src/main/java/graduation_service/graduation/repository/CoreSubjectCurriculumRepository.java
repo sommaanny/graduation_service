@@ -46,9 +46,19 @@ public class CoreSubjectCurriculumRepository {
 
 
 
-    //DB안 데이터 확인
+    //전체 조회
     public List<CoreSubjectCurriculum> findAll() {
-        return em.createQuery("select c from CoreSubjectCurriculum c").getResultList();
+        return em.createQuery("select c from CoreSubjectCurriculum c")
+                .getResultList();
     }
+
+    //특정 년도 조회
+    public List<CoreSubjectCurriculum> findByYear(int curriculumYear) {
+        return em.createQuery("select c from CoreSubjectCurriculum c where c.curriculumYear = :curriculumYear")
+                .setParameter("curriculumYear", curriculumYear)
+                .getResultList();
+    }
+
+
 
 }

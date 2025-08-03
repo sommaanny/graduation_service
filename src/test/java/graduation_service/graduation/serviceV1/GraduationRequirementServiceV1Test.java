@@ -1,18 +1,11 @@
 package graduation_service.graduation.serviceV1;
 
-import graduation_service.graduation.domain.entity.Course;
-import graduation_service.graduation.domain.entity.GraduationRequirements;
-import graduation_service.graduation.domain.entity.GraduationRequirementsCourses;
-import graduation_service.graduation.domain.enums.CourseType;
 import graduation_service.graduation.dto.GraduationRequirementUpdateDto;
 import graduation_service.graduation.dto.requestDto.courseDto.CourseCreateRequest;
 import graduation_service.graduation.dto.requestDto.courseDto.CourseRequest;
 import graduation_service.graduation.dto.requestDto.graduationRequirementDto.GraduationRequirementCreateRequest;
-import graduation_service.graduation.dto.responseDto.CourseResponse;
-import graduation_service.graduation.dto.responseDto.GraduationRequirementResponse;
-import graduation_service.graduation.repository.CourseRepository;
-import graduation_service.graduation.repository.GraduationRequirementCoursesRepository;
-import graduation_service.graduation.serviceV0.GraduationRequirementService;
+import graduation_service.graduation.dto.responseDto.courseReponse.CourseResponse;
+import graduation_service.graduation.dto.responseDto.graduationResponse.GraduationRequirementResponse;
 import jakarta.persistence.EntityManager;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
@@ -22,7 +15,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.Optional;
 
 import static graduation_service.graduation.domain.enums.CourseType.MAJOR_REQUIRED;
 import static graduation_service.graduation.domain.enums.Department.AI_ENGINEERING;

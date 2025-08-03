@@ -1,9 +1,7 @@
 package graduation_service.graduation.serviceV1;
 
-import graduation_service.graduation.domain.entity.Course;
 import graduation_service.graduation.dto.requestDto.courseDto.CourseCreateRequest;
-import graduation_service.graduation.dto.responseDto.CourseResponse;
-import graduation_service.graduation.serviceV0.CourseService;
+import graduation_service.graduation.dto.responseDto.courseReponse.CourseResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;

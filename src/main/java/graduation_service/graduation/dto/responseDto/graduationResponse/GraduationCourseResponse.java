@@ -1,9 +1,8 @@
-package graduation_service.graduation.dto.responseDto;
+package graduation_service.graduation.dto.responseDto.graduationResponse;
 
-import graduation_service.graduation.domain.entity.Course;
 import graduation_service.graduation.domain.entity.GraduationRequirements;
-import graduation_service.graduation.domain.entity.GraduationRequirementsCourses;
 import graduation_service.graduation.domain.enums.Department;
+import graduation_service.graduation.dto.responseDto.courseReponse.CourseResponse;
 import lombok.Builder;
 import lombok.Data;
 

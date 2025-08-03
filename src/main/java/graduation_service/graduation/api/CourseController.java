@@ -1,11 +1,8 @@
 package graduation_service.graduation.api;
 
-import graduation_service.graduation.domain.entity.Course;
 import graduation_service.graduation.dto.requestDto.courseDto.CourseCreateRequest;
-import graduation_service.graduation.dto.requestDto.courseDto.CourseRequest;
 import graduation_service.graduation.dto.responseDto.ApiResponse;
-import graduation_service.graduation.dto.responseDto.CourseResponse;
-import graduation_service.graduation.serviceV0.CourseService;
+import graduation_service.graduation.dto.responseDto.courseReponse.CourseResponse;
 import graduation_service.graduation.serviceV1.CourseServiceV1;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

@@ -4,9 +4,8 @@ import graduation_service.graduation.domain.entity.GraduationRequirements;
 import graduation_service.graduation.domain.entity.GraduationRequirementsCourses;
 import graduation_service.graduation.domain.enums.CourseType;
 import graduation_service.graduation.domain.enums.Department;
-import graduation_service.graduation.dto.responseDto.CourseResponse;
-import graduation_service.graduation.dto.responseDto.GraduationCourseResponse;
-import graduation_service.graduation.dto.responseDto.GraduationRequirementResponse;
+import graduation_service.graduation.dto.responseDto.courseReponse.CourseResponse;
+import graduation_service.graduation.dto.responseDto.graduationResponse.GraduationCourseResponse;
 import graduation_service.graduation.repository.GraduationRequirementCoursesRepository;
 import graduation_service.graduation.repository.GraduationRequirementsRepository;
 import lombok.RequiredArgsConstructor;
@@ -14,7 +13,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Transactional(readOnly = true)
@@ -34,9 +32,13 @@ public class GraduationRequirementCoursesServiceV1 {
 
         GraduationCourseResponse graduationCourseResponse = GraduationCourseResponse.fromEntity(findGr, year, department);
 
-        List<GraduationRequirementsCourses> all = grcRepository.findAll(department, year);
+        List<GraduationRequirementsCourses> all = grcRepository.findAll(department, year); //졸업요건 과목 조회
+        //Dto로 변환
         for (GraduationRequirementsCourses graduationRequirementsCourses : all) {
+
             CourseResponse courseResponse = CourseResponse.fromEntity(graduationRequirementsCourses.getCourse());
+            courseResponse.setCourseType(graduationRequirementsCourses.getCourseType());
+
             graduationCourseResponse.getCourses().add(courseResponse);
         }
 
@@ -52,7 +54,10 @@ public class GraduationRequirementCoursesServiceV1 {
 
         List<GraduationRequirementsCourses> all = grcRepository.findByCourseType(department, courseType, year);
         for (GraduationRequirementsCourses graduationRequirementsCourses : all) {
+
             CourseResponse courseResponse = CourseResponse.fromEntity(graduationRequirementsCourses.getCourse());
+            courseResponse.setCourseType(graduationRequirementsCourses.getCourseType());
+
             graduationCourseResponse.getCourses().add(courseResponse);
         }
 

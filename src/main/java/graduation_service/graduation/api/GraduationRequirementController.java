@@ -1,10 +1,14 @@
 package graduation_service.graduation.api;
 
+import graduation_service.graduation.domain.enums.CoreType;
 import graduation_service.graduation.domain.enums.Department;
 import graduation_service.graduation.dto.GraduationRequirementUpdateDto;
+import graduation_service.graduation.dto.requestDto.courseDto.CourseRequest;
 import graduation_service.graduation.dto.requestDto.graduationRequirementDto.GraduationRequirementCreateRequest;
-import graduation_service.graduation.dto.responseDto.ApiResponse;
-import graduation_service.graduation.dto.responseDto.GraduationRequirementResponse;
+import graduation_service.graduation.dto.responseDto.*;
+import graduation_service.graduation.dto.responseDto.graduationResponse.GraduationCoreSubjectCreateResponse;
+import graduation_service.graduation.dto.responseDto.graduationResponse.GraduationCourseCreateResponse;
+import graduation_service.graduation.dto.responseDto.graduationResponse.GraduationRequirementResponse;
 import graduation_service.graduation.serviceV1.GraduationRequirementServiceV1;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -59,4 +63,25 @@ public class GraduationRequirementController {
         return ApiResponse.success("졸업 요건 수정 성공, 졸업요건 id: " + id, null);
     }
 
+
+    @PostMapping("/graduation-requirements/{grId}/courses")
+    public ApiResponse<GraduationCourseCreateResponse> addGraduationCourse(@PathVariable("grId") Long id,
+                                                                           @RequestParam("year") int year,
+                                                                           @RequestBody @Valid CourseRequest courseRequest) {
+
+        GraduationCourseCreateResponse graduationCourseCreateResponse = graduationRequirementService.addCourseToGraduationRequirement(id, year, courseRequest);
+
+        return ApiResponse.success("졸업 요건 과목 등록 성공", graduationCourseCreateResponse);
+    }
+
+    @PostMapping("/graduation-requirements/{grId}/core-subject")
+    public ApiResponse<GraduationCoreSubjectCreateResponse> addGraduationCoreSubject(@PathVariable("grId") Long id,
+                                                                                     @RequestParam("year") int year,
+                                                                                     @RequestParam("urlCoreType") String urlCoreType) {
+        CoreType coreType = CoreType.fromUrlName(urlCoreType);
+
+        GraduationCoreSubjectCreateResponse graduationCoreSubjectCreateResponse = graduationRequirementService.addCoreSubjectTypes(id, year, coreType);
+
+        return ApiResponse.success("졸업요건 핵심교양 등록 성공", graduationCoreSubjectCreateResponse);
+    }
 }
