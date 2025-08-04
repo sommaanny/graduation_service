@@ -1,5 +1,6 @@
 package graduation_service.graduation;
 
+import graduation_service.graduation.domain.enums.CoreType;
 import graduation_service.graduation.domain.enums.CourseType;
 import graduation_service.graduation.domain.enums.Department;
 import graduation_service.graduation.dto.requestDto.courseDto.CourseCreateRequest;
@@ -75,6 +76,32 @@ public class DataInitializer implements CommandLineRunner {
         );
 
         log.info("초기 졸업요건 과목 등록 완료");
+
+        //졸업 요건에 핵심교양 추가
+        graduationRequirementService.addCoreSubjectTypes(
+                graduationRequirementResponse.getId(),
+                graduationRequirementResponse.getGraduationRequirementsYear(),
+                CoreType.CORE_1);
+
+        graduationRequirementService.addCoreSubjectTypes(
+                graduationRequirementResponse.getId(),
+                graduationRequirementResponse.getGraduationRequirementsYear(),
+                CoreType.CORE_2);
+
+        graduationRequirementService.addCoreSubjectTypes(
+                graduationRequirementResponse.getId(),
+                graduationRequirementResponse.getGraduationRequirementsYear(),
+                CoreType.CORE_3);
+
+        graduationRequirementService.addCoreSubjectTypes(
+                graduationRequirementResponse.getId(),
+                graduationRequirementResponse.getGraduationRequirementsYear(),
+                CoreType.CORE_5);
+
+        graduationRequirementService.addCoreSubjectTypes(
+                graduationRequirementResponse.getId(),
+                graduationRequirementResponse.getGraduationRequirementsYear(),
+                CoreType.CORE_6);
 
     }
 }

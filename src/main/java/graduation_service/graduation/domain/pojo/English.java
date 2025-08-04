@@ -2,10 +2,16 @@ package graduation_service.graduation.domain.pojo;
 
 import graduation_service.graduation.domain.enums.EnglishScorePolicy;
 import graduation_service.graduation.domain.enums.TestType;
+import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 
-@Getter
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class English {
 
     private TestType testType;
@@ -25,9 +31,6 @@ public class English {
         } else {
             return policy.isPassed(numericScore);
         }
-    }
-
-    public English() {
     }
 
     public English(TestType testType, float score) {

@@ -8,12 +8,14 @@ import graduation_service.graduation.domain.entity.GraduationRequirementsCourses
 import graduation_service.graduation.domain.enums.Department;
 import graduation_service.graduation.domain.pojo.English;
 import graduation_service.graduation.domain.pojo.Transcript;
+import graduation_service.graduation.dto.RemainingCourseDto;
 import graduation_service.graduation.serviceV0.GraduationRequirementService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -52,7 +54,8 @@ public class GraduationCheckService {
 
         //이수 못한 과목 없는지 확인(핵심교양 제외)
         int missingElectiveMajorCredits = creditStatus.getMissingElectiveMajorCredits(); //모자른 전선학점
-        List<GraduationRequirementsCourses> remainingCourses = checkRemainingCourses(transcript, gr, missingElectiveMajorCredits);
+//        List<GraduationRequirementsCourses> remainingCourses = checkRemainingCourses(transcript, gr, missingElectiveMajorCredits);
+        List<RemainingCourseDto> remainingCourses = new ArrayList<>();
         boolean coursePassed = remainingCourses.isEmpty();
 
         //영어 성적 만족하는지
