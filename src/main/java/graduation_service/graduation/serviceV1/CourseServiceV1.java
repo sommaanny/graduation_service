@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -72,7 +73,7 @@ public class CourseServiceV1 {
     //학수 번호로 조회
     public CourseResponse findByCourseNumber(String courseNumber) {
         Course course = courseRepository.findByCourseNumber(courseNumber)
-                .orElseThrow(() -> new IllegalArgumentException("해당 학수번호의 과목이 존재하지 않습니다."));
+                .orElseThrow(() -> new NoSuchElementException("해당 학수번호의 과목이 존재하지 않습니다."));
 
         return CourseResponse.fromEntity(course);
     }
@@ -82,7 +83,7 @@ public class CourseServiceV1 {
     public void deleteCourse(Long id) {
         Course findCourse = courseRepository.findOne(id);
         if (findCourse == null) {
-            throw new IllegalStateException("삭제할 과목이 없습니다");
+            throw new NoSuchElementException("삭제할 과목이 없습니다");
         }
         courseRepository.delete(findCourse);
     }

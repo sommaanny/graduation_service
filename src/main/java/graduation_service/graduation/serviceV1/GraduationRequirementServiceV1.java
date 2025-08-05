@@ -55,7 +55,7 @@ public class GraduationRequirementServiceV1 {
         Course course = courseRepository.findOne(courseRequest.getCourseId());
 
         if (course == null) {
-            throw new IllegalArgumentException("해당 ID의 과목이 존재하지 않습니다");
+            throw new NoSuchElementException("해당 ID의 과목이 존재하지 않습니다");
         }
 
         GraduationRequirementsCourses grc = new GraduationRequirementsCourses();

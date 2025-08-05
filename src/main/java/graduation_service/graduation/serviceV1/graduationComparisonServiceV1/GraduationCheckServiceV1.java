@@ -19,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -32,7 +33,7 @@ public class GraduationCheckServiceV1 {
     private final CoreSubjectService coreSubjectService;
 
     @Transactional(readOnly = true)
-    public GraduationResultDto checkGraduation(GraduationCheckRequest graduationCheckRequest) throws IOException {
+    public GraduationResultDto checkGraduation(GraduationCheckRequest graduationCheckRequest) {
 
         Transcript transcript = graduationCheckRequest.getTranscript();
         English english = graduationCheckRequest.getEnglish();
@@ -51,7 +52,7 @@ public class GraduationCheckServiceV1 {
 
         //졸업요건 조회
         Optional<GraduationRequirements> findGr = graduationRequirementService.findByGRDepartment(department, studentId);
-        GraduationRequirements gr = findGr.orElseThrow(() -> new IllegalStateException("해당 학과의 졸업요건을 찾지 못했습니다."));
+        GraduationRequirements gr = findGr.orElseThrow(() -> new NoSuchElementException("해당 학과의 졸업요건을 찾지 못했습니다."));
 
         //학점 충족 상태
         CreditStatusDto creditStatus = checkCredits(gr, transcript);
@@ -82,7 +83,7 @@ public class GraduationCheckServiceV1 {
     }
 
     //이수 못한 과목 반환
-    public List<RemainingCourseDto> checkRemainingCourses(Transcript transcript, GraduationRequirements gr, int missingElectiveMajorCredits) throws IOException {
+    public List<RemainingCourseDto> checkRemainingCourses(Transcript transcript, GraduationRequirements gr, int missingElectiveMajorCredits) {
         Set<String> completedCourseNumbers = transcript.getCompletedCourseNumbers(); // 이수과목들 추출
 
         // 졸업요건과 비교하여 이수 못한 과목들 반환

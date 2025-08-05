@@ -1,6 +1,7 @@
 package graduation_service.graduation.serviceV0.graduationComparisonService;
 
 import graduation_service.graduation.domain.pojo.Transcript;
+import graduation_service.graduation.exception.TranscriptParsingException;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
 import org.springframework.stereotype.Service;
@@ -15,14 +16,19 @@ import java.util.regex.Pattern;
 @Service
 public class TranscriptExtractService {
 
-    public Transcript extract(MultipartFile file) throws IOException {
-        InputStream inputStream = file.getInputStream();
-        PDDocument document = PDDocument.load(inputStream); // pdf 파일 읽기
+    public Transcript extract(MultipartFile file) {
+        InputStream inputStream = null;
+        String text;
+        try {
+            inputStream = file.getInputStream();
+            PDDocument document = PDDocument.load(inputStream); // pdf 파일 읽기
+            PDFTextStripper stripper = new PDFTextStripper(); //텍스트 추출 도구
+            text = stripper.getText(document); //텍스트 추출
+            document.close(); //리소스 정리
 
-        PDFTextStripper stripper = new PDFTextStripper(); //텍스트 추출 도구
-        String text = stripper.getText(document); //텍스트 추출
-
-        document.close(); //리소스 정리
+        } catch (IOException e) {
+            throw new TranscriptParsingException("성적표를 파싱하던 중 오류 발생", e);
+        }
 
         // 성적표 클래스에 매핑
         Transcript transcript = new Transcript(); //매핑할 성적표 객체 생성

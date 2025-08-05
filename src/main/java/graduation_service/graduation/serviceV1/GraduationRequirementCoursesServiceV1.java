@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 @Transactional(readOnly = true)
@@ -28,7 +29,7 @@ public class GraduationRequirementCoursesServiceV1 {
     public GraduationCourseResponse findAllGrc(Department department, int year) {
 
         GraduationRequirements findGr = graduationRequirementsRepository.findByDepartment(department, year)
-                .orElseThrow(() -> new IllegalStateException("해당 학과의 해당하는 졸업요건을 찾을 수 없습니다."));
+                .orElseThrow(() -> new NoSuchElementException("해당 학과의 해당하는 졸업요건을 찾을 수 없습니다."));
 
         GraduationCourseResponse graduationCourseResponse = GraduationCourseResponse.fromEntity(findGr, year, department);
 
@@ -48,7 +49,7 @@ public class GraduationRequirementCoursesServiceV1 {
     //특정 학과의 졸업요건 과목 중 과목 타입(전공, 교양 ..)으로 조회
     public GraduationCourseResponse findGrcByCourseType(Department department, CourseType courseType, int year) {
         GraduationRequirements findGr = graduationRequirementsRepository.findByDepartment(department, year)
-                .orElseThrow(() -> new IllegalStateException("해당 학과의 해당하는 졸업요건을 찾을 수 없습니다."));
+                .orElseThrow(() -> new NoSuchElementException("해당 학과의 해당하는 졸업요건을 찾을 수 없습니다."));
 
         GraduationCourseResponse graduationCourseResponse = GraduationCourseResponse.fromEntity(findGr, year, department);
 

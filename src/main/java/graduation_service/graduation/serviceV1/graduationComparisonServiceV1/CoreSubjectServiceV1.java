@@ -42,7 +42,6 @@ public class CoreSubjectServiceV1 {
         Optional<CoreSubjectCurriculum> findCourse =
                 coreSubjectCurriculumRepository.findByCourse(coreSubjectCurriculum.getCourse(), coreSubjectCurriculum.getCurriculumYear());
 
-
         if (findCourse.isPresent()) {
             throw new IllegalStateException("이미 존재하는 핵심교양입니다: " + coreSubjectCurriculum.getCourse().getCourseTitle());
         }
@@ -57,7 +56,7 @@ public class CoreSubjectServiceV1 {
     public CoreSubjectResponse findByCourse(Long courseId, int curriculumYear) {
         Course course = courseRepository.findOne(courseId);
         CoreSubjectCurriculum findOne = coreSubjectCurriculumRepository.findByCourse(course, curriculumYear)
-                .orElseThrow(() -> new IllegalStateException("해당 과목은 핵심교양에 포함되어 있지 않습니다."));
+                .orElseThrow(() -> new NoSuchElementException("해당 과목은 핵심교양이 아닙니다."));
 
         return new CoreSubjectResponse(findOne.getId(), findOne.getCourse().getId(), findOne.getCurriculumYear(), findOne.getCoreType());
 

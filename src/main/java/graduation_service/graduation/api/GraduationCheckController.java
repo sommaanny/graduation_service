@@ -19,7 +19,7 @@ public class GraduationCheckController {
     private final GraduationCheckServiceV1 graduationCheckService;
 
     @PostMapping("/graduation-check")
-    public ApiResponse<GraduationResultDto> graduationCheck(@RequestBody @Valid GraduationCheckRequest graduationCheckRequest) throws IOException {
+    public ApiResponse<GraduationResultDto> graduationCheck(@RequestBody @Valid GraduationCheckRequest graduationCheckRequest) {
         GraduationResultDto graduationResultDto = graduationCheckService.checkGraduation(graduationCheckRequest);
         return ApiResponse.success("졸업요건 진단 성공", graduationResultDto);
     }

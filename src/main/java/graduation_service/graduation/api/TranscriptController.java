@@ -17,7 +17,7 @@ public class TranscriptController {
     private final TranscriptExtractService transcriptExtractService;
 
     @PostMapping("/transcript")
-    public ApiResponse<Transcript> parseTranscript(MultipartFile multipartFile) throws IOException {
+    public ApiResponse<Transcript> parseTranscript(MultipartFile multipartFile) {
         Transcript transcript = transcriptExtractService.extract(multipartFile);
         return ApiResponse.success("성적표 등록 완료", transcript);
     }
