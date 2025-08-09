@@ -17,6 +17,14 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(
+        uniqueConstraints = {
+                @UniqueConstraint(
+                        name = "uk_department_year",
+                        columnNames = {"department", "graduation_requirements_year"}
+                )
+        }
+)
 public class GraduationRequirements {
 
     @Id @GeneratedValue
@@ -61,7 +69,6 @@ public class GraduationRequirements {
     private int graduationRequirementsYear;
 
     //학과
-    @Column(unique = true)
     @Enumerated(EnumType.STRING)
     private Department department;
 

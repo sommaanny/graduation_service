@@ -44,6 +44,9 @@ public class CourseServiceV1 {
     //조회
     public CourseResponse findCourse(Long id) {
         Course findCourse = courseRepository.findOne(id);
+        if (findCourse == null) {
+            throw new NoSuchElementException("해당 과목이 존재하지 않습니다.");
+        }
         return CourseResponse.fromEntity(findCourse);
     }
 

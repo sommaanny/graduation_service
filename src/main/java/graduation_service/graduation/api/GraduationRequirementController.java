@@ -64,7 +64,7 @@ public class GraduationRequirementController {
     }
 
 
-    @PostMapping("/graduation-requirements/{grId}/courses")
+    @PostMapping("/graduation-requirement/{grId}/courses")
     public ApiResponse<GraduationCourseCreateResponse> addGraduationCourse(@PathVariable("grId") Long id,
                                                                            @RequestParam("year") int year,
                                                                            @RequestBody @Valid CourseRequest courseRequest) {
@@ -74,7 +74,7 @@ public class GraduationRequirementController {
         return ApiResponse.success("졸업 요건 과목 등록 성공", graduationCourseCreateResponse);
     }
 
-    @PostMapping("/graduation-requirements/{grId}/core-subject")
+    @PostMapping("/graduation-requirement/{grId}/core-subject")
     public ApiResponse<GraduationCoreSubjectCreateResponse> addGraduationCoreSubject(@PathVariable("grId") Long id,
                                                                                      @RequestParam("year") int year,
                                                                                      @RequestParam("urlCoreType") String urlCoreType) {

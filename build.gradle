@@ -35,6 +35,9 @@ dependencies {
 	//Apache PDFBox - pdf 파일 처리를 위한 라이브러리
 	implementation 'org.apache.pdfbox:pdfbox:2.0.34'
 
+	//단방향 해쉬를 위한 BCryptPasswordEncoder
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+
 	compileOnly 'org.projectlombok:lombok'
 	runtimeOnly 'com.h2database:h2'
 	annotationProcessor 'org.projectlombok:lombok'

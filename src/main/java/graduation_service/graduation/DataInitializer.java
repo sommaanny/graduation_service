@@ -102,6 +102,7 @@ public class DataInitializer implements CommandLineRunner {
                 graduationRequirementResponse.getId(),
                 graduationRequirementResponse.getGraduationRequirementsYear(),
                 CoreType.CORE_6);
-
     }
+
+
 }

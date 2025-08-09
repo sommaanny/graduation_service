@@ -9,6 +9,7 @@ import graduation_service.graduation.domain.entity.GraduationRequirements;
 import graduation_service.graduation.domain.enums.CourseType;
 import graduation_service.graduation.domain.enums.Department;
 import graduation_service.graduation.domain.pojo.English;
+import graduation_service.graduation.dto.RemainingCourseDto;
 import graduation_service.graduation.serviceV0.CourseService;
 import graduation_service.graduation.serviceV0.GraduationRequirementService;
 import lombok.extern.slf4j.Slf4j;
@@ -114,10 +115,10 @@ class GraduationCheckServiceTest {
         log.info("\n");
 
         //이수 못한 과목
-        List<GraduationRequirementsCourses> remainingCourses = result.getRemainingCourses();
+        List<RemainingCourseDto> remainingCourses = result.getRemainingCourses();
 
-        for (GraduationRequirementsCourses remainingCours : remainingCourses) {
-            log.info("남은과목: " + remainingCours.getCourse().getCourseTitle());
+        for (RemainingCourseDto remainingCours : remainingCourses) {
+            log.info("남은과목: " + remainingCours.getCourseTitle());
         }
 
         //이수 못한 핵심교양
