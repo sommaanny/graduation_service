@@ -18,7 +18,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 @Slf4j
-@Component
+//@Component
 @Profile("local")
 @RequiredArgsConstructor
 public class DataInitializer implements CommandLineRunner {

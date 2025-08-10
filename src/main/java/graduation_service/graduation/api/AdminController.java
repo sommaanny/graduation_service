@@ -4,6 +4,7 @@ import graduation_service.graduation.domain.entity.Admin;
 import graduation_service.graduation.dto.requestDto.loginDto.LoginRequest;
 import graduation_service.graduation.dto.responseDto.ApiResponse;
 import graduation_service.graduation.serviceV0.AdminService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.ArrayList;
 import java.util.List;
 
+@Tag(name = "Admin-Controller", description = "관리자 로그인 API 엔드포인트")
 @RestController
 @RequiredArgsConstructor
 public class AdminController {

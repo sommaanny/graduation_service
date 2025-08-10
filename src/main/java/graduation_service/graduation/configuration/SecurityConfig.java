@@ -1,13 +1,19 @@
 package graduation_service.graduation.configuration;
 
 
+import graduation_service.graduation.filter.CsrfTokenDebugFilter;
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
+import org.springframework.security.web.csrf.CsrfFilter;
+import org.springframework.security.web.csrf.CsrfTokenRequestAttributeHandler;
+import org.springframework.security.web.csrf.XorCsrfTokenRequestAttributeHandler;
 
 
 @Configuration
@@ -16,12 +22,23 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfig {
 
     private final MyLogoutSuccessHandler myLogoutSuccessHandler;
+    private final CsrfTokenDebugFilter csrfTokenDebugFilter;
+
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-                // 2. CSRF 보호 비활성화
-                .csrf(AbstractHttpConfigurer::disable)
+                // 2. CSRF 보호 쿠키 방식
+                // 첫 GET 요청의 응답에 XSRF-TOKEN 쿠키를 실어보냄.
+                .csrf(csrf -> csrf
+                        .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
+                        // 해당 API 경로는 CSRF 검증에서 제외합니다.
+                        .ignoringRequestMatchers(
+                                "/admin/login", "/admin/logout",
+                                "/transcript/**", "/english-types/**",
+                                "/departments/**", "/graduation-check")
+                        .csrfTokenRequestHandler(new CsrfTokenRequestAttributeHandler()) // Xor 방식 제거
+                )
 
                 // 3. HTTP Basic 인증 비활성화 (사용하지 않으므로)
                 .httpBasic(AbstractHttpConfigurer::disable)
@@ -31,12 +48,13 @@ public class SecurityConfig {
 
                 // 5. 경로별 인가(Authorization) 설정
                 .authorizeHttpRequests(authorize -> authorize
-
+                        //정적 리소스 허용
+                        .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
                         // 다음 경로들은 인증 없이 접근 허용
                         .requestMatchers(
                                 "/admin/login", "/transcript/**",
                                 "/english-types/**", "/departments/**",
-                                "/graduation-check").permitAll()
+                                "/graduation-check", "/swagger-ui/**").permitAll()
 
                         // 그 외 모든 요청은 인증된 사용자만 접근 가능
                         .anyRequest().authenticated()
@@ -51,7 +69,7 @@ public class SecurityConfig {
                         .permitAll()
                 );
 
-
+        http.addFilterBefore(csrfTokenDebugFilter, CsrfFilter.class);
 
         return http.build();
     }

@@ -48,13 +48,13 @@ public class CoreSubjectCurriculumRepository {
 
     //전체 조회
     public List<CoreSubjectCurriculum> findAll() {
-        return em.createQuery("select c from CoreSubjectCurriculum c")
+        return em.createQuery("select c from CoreSubjectCurriculum c", CoreSubjectCurriculum.class)
                 .getResultList();
     }
 
     //특정 년도 조회
     public List<CoreSubjectCurriculum> findByYear(int curriculumYear) {
-        return em.createQuery("select c from CoreSubjectCurriculum c where c.curriculumYear = :curriculumYear")
+        return em.createQuery("select c from CoreSubjectCurriculum c where c.curriculumYear = :curriculumYear", CoreSubjectCurriculum.class)
                 .setParameter("curriculumYear", curriculumYear)
                 .getResultList();
     }
