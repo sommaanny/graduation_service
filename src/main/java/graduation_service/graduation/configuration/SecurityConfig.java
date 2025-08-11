@@ -54,7 +54,7 @@ public class SecurityConfig {
                         .requestMatchers(
                                 "/admin/login", "/transcript/**",
                                 "/english-types/**", "/departments/**",
-                                "/graduation-check", "/swagger-ui/**").permitAll()
+                                "/graduation-check", "/swagger-ui/**", "/swagger-resources/**", "/v3/api-docs/**").permitAll()
 
                         // 그 외 모든 요청은 인증된 사용자만 접근 가능
                         .anyRequest().authenticated()

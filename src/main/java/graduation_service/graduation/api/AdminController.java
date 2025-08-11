@@ -1,9 +1,14 @@
 package graduation_service.graduation.api;
 
+import graduation_service.graduation.api.exampleConst.LoginExample;
 import graduation_service.graduation.domain.entity.Admin;
 import graduation_service.graduation.dto.requestDto.loginDto.LoginRequest;
 import graduation_service.graduation.dto.responseDto.ApiResponse;
 import graduation_service.graduation.serviceV0.AdminService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.ExampleObject;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -30,8 +35,18 @@ public class AdminController {
 
     private final AdminService adminService;
 
+
     @PostMapping("/admin/login")
-    public ApiResponse<Void> login(@RequestBody @Valid LoginRequest loginRequest, HttpServletRequest request) {
+    @Operation(summary = "관리자 로그인")
+    @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "로그인 성공",
+            content = @Content(
+                    mediaType = "application/json",
+                    schema = @Schema(implementation = ApiResponse.class), // 공통 스키마 사용
+                    examples = @ExampleObject(
+                            name = "로그인 성공 예시",
+                            value = LoginExample.LOGIN_SUCCESS
+                    )))
+    public ApiResponse<Void> login(@RequestBody @Valid @Schema(implementation = LoginRequest.class) LoginRequest loginRequest, HttpServletRequest request) {
         String loginId = loginRequest.getLoginId();
         String loginPw = loginRequest.getLoginPw();
 
