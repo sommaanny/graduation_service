@@ -7,12 +7,15 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 
 @SpringBootTest
+@ActiveProfiles("test")
 @Transactional
 @Slf4j
 class CourseServiceV1Test {
@@ -110,7 +113,7 @@ class CourseServiceV1Test {
         courseService.deleteCourse(saved1.getId());
 
         Assertions.assertThatThrownBy(() -> courseService.findByCourseNumber("AIE-12234"))
-                .isInstanceOf(IllegalArgumentException.class)
+                .isInstanceOf(NoSuchElementException.class)
                 .hasMessageContaining("해당 학수번호의 과목이 존재하지 않습니다.");
 
         CourseResponse remain = courseService.findByCourseNumber("AIE-12235");
@@ -120,7 +123,7 @@ class CourseServiceV1Test {
     @Test
     void 없는과목삭제예외() {
         Assertions.assertThatThrownBy(() -> courseService.deleteCourse(999999L))
-                .isInstanceOf(IllegalStateException.class)
+                .isInstanceOf(NoSuchElementException.class)
                 .hasMessageContaining("삭제할 과목이 없습니다");
     }
 }

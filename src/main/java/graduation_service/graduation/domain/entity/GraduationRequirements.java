@@ -39,6 +39,8 @@ public class GraduationRequirements {
         this.generalEducationCreditsEarned = generalEducationCreditsEarned;
         this.gpa = gpa;
         this.graduationRequirementsYear = graduationRequirementsYear;
+        this.graduationRequirementsCourses = new ArrayList<>();
+        this.coreTypes = new ArrayList<>();
     }
 
     //이수해야 할 총 학점

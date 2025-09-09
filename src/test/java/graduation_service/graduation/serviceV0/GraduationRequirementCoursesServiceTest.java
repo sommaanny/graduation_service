@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -17,6 +18,7 @@ import static org.assertj.core.api.Assertions.*;
 
 @Slf4j
 @Transactional
+@ActiveProfiles("test")
 @SpringBootTest
 class GraduationRequirementCoursesServiceTest {
 
@@ -30,6 +32,12 @@ class GraduationRequirementCoursesServiceTest {
         Course course = new Course("AIE-12235", "알고리즘", 3);
         GraduationRequirements graduationRequirements
                 = new GraduationRequirements(AI_ENGINEERING, 130, 65, 65, 3.0F, 22);
+
+        graduationRequirements.setRequiredMajorCreditsEarned(30); //전필 30학점
+        graduationRequirements.setElectiveMajorCreditsEarned(35); //전선 35학점
+        graduationRequirements.setRequiredGeneralEducationCreditsEarned(25); //교필 25
+        graduationRequirements.setElectiveGeneralEducationCreditsEarned(40); //교선 40
+        graduationRequirements.validateCreditsConsistency();
 
         Long courseId = courseService.addCourse(course);
         Long grId = grService.addGR(graduationRequirements, 22);

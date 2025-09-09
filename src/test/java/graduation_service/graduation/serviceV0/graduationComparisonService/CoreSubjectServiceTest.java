@@ -15,6 +15,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.File;
@@ -30,6 +31,7 @@ import static org.assertj.core.api.Assertions.*;
 
 @Slf4j
 @Transactional
+@ActiveProfiles("test")
 @SpringBootTest
 class CoreSubjectServiceTest {
 
@@ -66,6 +68,13 @@ class CoreSubjectServiceTest {
 
         //졸업요건 추가
         GraduationRequirements gr = new GraduationRequirements(AI_ENGINEERING, 130, 65, 65, 3.0F, 22);
+
+        gr.setRequiredMajorCreditsEarned(30); //전필 30학점
+        gr.setElectiveMajorCreditsEarned(35); //전선 35학점
+        gr.setRequiredGeneralEducationCreditsEarned(25); //교필 25
+        gr.setElectiveGeneralEducationCreditsEarned(40); //교선 40
+        gr.validateCreditsConsistency();
+
         Long saveId = grService.addGR(gr, 22);
 
         //졸업 요건에 과목추가

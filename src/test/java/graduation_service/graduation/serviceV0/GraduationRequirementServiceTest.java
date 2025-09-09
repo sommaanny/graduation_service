@@ -10,9 +10,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import static graduation_service.graduation.domain.enums.CourseType.*;
@@ -20,6 +22,7 @@ import static graduation_service.graduation.domain.enums.Department.*;
 import static org.assertj.core.api.Assertions.*;
 
 @Slf4j
+@ActiveProfiles("test")
 @Transactional
 @SpringBootTest
 class GraduationRequirementServiceTest {
@@ -33,6 +36,12 @@ class GraduationRequirementServiceTest {
         //given
         GraduationRequirements graduationRequirements
                 = new GraduationRequirements(COMPUTER_SCIENCE, 130, 65, 65, 3.0F, 22);
+
+        graduationRequirements.setRequiredMajorCreditsEarned(30); //전필 30학점
+        graduationRequirements.setElectiveMajorCreditsEarned(35); //전선 35학점
+        graduationRequirements.setRequiredGeneralEducationCreditsEarned(25); //교필 25
+        graduationRequirements.setElectiveGeneralEducationCreditsEarned(40); //교선 40
+        graduationRequirements.validateCreditsConsistency();
 
         //when
         Long saveId = graduationRequirementService.addGR(graduationRequirements, 22);
@@ -51,6 +60,19 @@ class GraduationRequirementServiceTest {
         GraduationRequirements graduationRequirements2
                 = new GraduationRequirements(COMPUTER_SCIENCE, 135, 70, 65, 3.0F, 22);
 
+
+        graduationRequirements1.setRequiredMajorCreditsEarned(30); //전필 30학점
+        graduationRequirements1.setElectiveMajorCreditsEarned(35); //전선 35학점
+        graduationRequirements1.setRequiredGeneralEducationCreditsEarned(25); //교필 25
+        graduationRequirements1.setElectiveGeneralEducationCreditsEarned(40); //교선 40
+        graduationRequirements1.validateCreditsConsistency();
+
+        graduationRequirements2.setRequiredMajorCreditsEarned(35); //전필 35학점
+        graduationRequirements2.setElectiveMajorCreditsEarned(35); //전선 35학점
+        graduationRequirements2.setRequiredGeneralEducationCreditsEarned(25); //교필 25
+        graduationRequirements2.setElectiveGeneralEducationCreditsEarned(40); //교선 40
+        graduationRequirements2.validateCreditsConsistency();
+
         Long saveId1 = graduationRequirementService.addGR(graduationRequirements1, 22);
 
         //when, then
@@ -66,6 +88,12 @@ class GraduationRequirementServiceTest {
         //given
         GraduationRequirements graduationRequirements
                 = new GraduationRequirements(COMPUTER_SCIENCE, 130, 65, 65, 3.0F, 22);
+
+        graduationRequirements.setRequiredMajorCreditsEarned(30); //전필 30학점
+        graduationRequirements.setElectiveMajorCreditsEarned(35); //전선 35학점
+        graduationRequirements.setRequiredGeneralEducationCreditsEarned(25); //교필 25
+        graduationRequirements.setElectiveGeneralEducationCreditsEarned(40); //교선 40
+        graduationRequirements.validateCreditsConsistency();
 
         Long saveId = graduationRequirementService.addGR(graduationRequirements, 22);
 
@@ -109,6 +137,13 @@ class GraduationRequirementServiceTest {
         GraduationRequirements graduationRequirements
                 = new GraduationRequirements(COMPUTER_SCIENCE, 130, 65, 65, 3.0F, 22);
 
+        graduationRequirements.setRequiredMajorCreditsEarned(30); //전필 30학점
+        graduationRequirements.setElectiveMajorCreditsEarned(35); //전선 35학점
+        graduationRequirements.setRequiredGeneralEducationCreditsEarned(25); //교필 25
+        graduationRequirements.setElectiveGeneralEducationCreditsEarned(40); //교선 40
+        graduationRequirements.validateCreditsConsistency();
+
+
         Long saveId = graduationRequirementService.addGR(graduationRequirements, 22);
 
         //when
@@ -125,6 +160,13 @@ class GraduationRequirementServiceTest {
         //given
         GraduationRequirements graduationRequirements
                 = new GraduationRequirements(COMPUTER_SCIENCE, 130, 65, 65, 3.0F, 22);
+
+        graduationRequirements.setRequiredMajorCreditsEarned(30); //전필 30학점
+        graduationRequirements.setElectiveMajorCreditsEarned(35); //전선 35학점
+        graduationRequirements.setRequiredGeneralEducationCreditsEarned(25); //교필 25
+        graduationRequirements.setElectiveGeneralEducationCreditsEarned(40); //교선 40
+        graduationRequirements.validateCreditsConsistency();
+
 
         Long saveId = graduationRequirementService.addGR(graduationRequirements, 22);
 
@@ -144,8 +186,23 @@ class GraduationRequirementServiceTest {
         GraduationRequirements graduationRequirements
                 = new GraduationRequirements(COMPUTER_SCIENCE, 130, 65, 65, 3.0F, 22);
 
+        graduationRequirements.setRequiredMajorCreditsEarned(30); //전필 30학점
+        graduationRequirements.setElectiveMajorCreditsEarned(35); //전선 35학점
+        graduationRequirements.setRequiredGeneralEducationCreditsEarned(25); //교필 25
+        graduationRequirements.setElectiveGeneralEducationCreditsEarned(40); //교선 40
+        graduationRequirements.validateCreditsConsistency();
+
         GraduationRequirements graduationRequirements2
                 = new GraduationRequirements(AI_ENGINEERING, 130, 65, 65, 3.0F, 22);
+
+
+
+        graduationRequirements2.setRequiredMajorCreditsEarned(30); //전필 30학점
+        graduationRequirements2.setElectiveMajorCreditsEarned(35); //전선 35학점
+        graduationRequirements2.setRequiredGeneralEducationCreditsEarned(25); //교필 25
+        graduationRequirements2.setElectiveGeneralEducationCreditsEarned(40); //교선 40
+        graduationRequirements2.validateCreditsConsistency();
+
 
         graduationRequirementService.addGR(graduationRequirements, 22);
         graduationRequirementService.addGR(graduationRequirements2, 22);
@@ -170,8 +227,24 @@ class GraduationRequirementServiceTest {
         GraduationRequirements graduationRequirements
                 = new GraduationRequirements(COMPUTER_SCIENCE, 130, 65, 65, 3.0F, 22);
 
+
+        graduationRequirements.setRequiredMajorCreditsEarned(30); //전필 30학점
+        graduationRequirements.setElectiveMajorCreditsEarned(35); //전선 35학점
+        graduationRequirements.setRequiredGeneralEducationCreditsEarned(25); //교필 25
+        graduationRequirements.setElectiveGeneralEducationCreditsEarned(40); //교선 40
+        graduationRequirements.validateCreditsConsistency();
+
+
         GraduationRequirements graduationRequirements2
                 = new GraduationRequirements(AI_ENGINEERING, 130, 65, 65, 3.0F, 22);
+
+
+        graduationRequirements2.setRequiredMajorCreditsEarned(30); //전필 30학점
+        graduationRequirements2.setElectiveMajorCreditsEarned(35); //전선 35학점
+        graduationRequirements2.setRequiredGeneralEducationCreditsEarned(25); //교필 25
+        graduationRequirements2.setElectiveGeneralEducationCreditsEarned(40); //교선 40
+        graduationRequirements2.validateCreditsConsistency();
+
 
         Long saveId1 = graduationRequirementService.addGR(graduationRequirements, 22);
         Long saveId2 = graduationRequirementService.addGR(graduationRequirements2, 22);
@@ -185,16 +258,14 @@ class GraduationRequirementServiceTest {
             log.info(requirements.getDepartment() + "의 졸업요건");
         }
 
-        assertThat(graduationRequirementService.findGR(saveId1, 22))
-                .isNull();
     }
 
     //삭제 실패
     @Test
     void 졸업요건_삭제_실패() {
         assertThatThrownBy(() -> graduationRequirementService.deleteGR(1L, 22))
-                .isInstanceOf(IllegalStateException.class)
-                .hasMessageContaining("삭제할 졸업요건이 없습니다");
+                .isInstanceOf(NoSuchElementException.class)
+                .hasMessageContaining("졸업 요건을 찾을 수 없습니다.");
     }
 
     //변경

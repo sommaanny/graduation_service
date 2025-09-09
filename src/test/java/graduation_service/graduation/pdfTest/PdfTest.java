@@ -15,6 +15,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.File;
@@ -26,6 +27,7 @@ import java.util.regex.Pattern;
 import static graduation_service.graduation.domain.enums.Department.AI_ENGINEERING;
 
 @Slf4j
+@ActiveProfiles("test")
 @Transactional
 @SpringBootTest
 public class PdfTest {
@@ -43,9 +45,9 @@ public class PdfTest {
     void setUp() {
         //과목추가
         Course course1 = new Course("AIE3001", "기계학습", 3);
-        Course course2 = new Course("AIE1223", "알고리즘", 3);
+        Course course2 = new Course("AIE3012", "알고리즘", 3);
         Course course3 = new Course("MTH1001", "일반수학 1", 3);
-        Course course4 = new Course("AIE1227", "축제와 인간사회", 3);
+        Course course4 = new Course("GED2010", "축제와 인간사회", 3);
 
         courseService.addCourse(course1);
         courseService.addCourse(course2);
@@ -54,6 +56,11 @@ public class PdfTest {
 
         //졸업요건 추가
         GraduationRequirements gr = new GraduationRequirements(AI_ENGINEERING, 130, 65, 65, 3.0F, 22);
+        gr.setRequiredMajorCreditsEarned(30); //전필 30학점
+        gr.setElectiveMajorCreditsEarned(35); //전선 35학점
+        gr.setRequiredGeneralEducationCreditsEarned(25); //교필 25
+        gr.setElectiveGeneralEducationCreditsEarned(40); //교선 40
+        gr.validateCreditsConsistency();
         Long saveId = grService.addGR(gr, 22);
 
 
@@ -61,7 +68,7 @@ public class PdfTest {
         grService.addCourseToGraduationRequirement(saveId, 22, course1, CourseType.MAJOR_REQUIRED);
         grService.addCourseToGraduationRequirement(saveId, 22, course2, CourseType.MAJOR_ELECTIVE);
         grService.addCourseToGraduationRequirement(saveId, 22, course3, CourseType.GENERAL_REQUIRED);
-        grService.addCourseToGraduationRequirement(saveId, 22, course4, CourseType.GENERAL_ELECTIVE);
+        grService.addCourseToGraduationRequirement(saveId, 22, course4, CourseType.GENERAL_REQUIRED);
     }
 
     @Test
