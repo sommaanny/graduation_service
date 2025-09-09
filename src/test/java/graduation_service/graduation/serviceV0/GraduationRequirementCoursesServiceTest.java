@@ -1,0 +1,72 @@
+package graduation_service.graduation.serviceV0;
+
+import graduation_service.graduation.domain.entity.Course;
+import graduation_service.graduation.domain.entity.GraduationRequirements;
+import graduation_service.graduation.domain.entity.GraduationRequirementsCourses;
+import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+
+import static graduation_service.graduation.domain.enums.CourseType.*;
+import static graduation_service.graduation.domain.enums.Department.AI_ENGINEERING;
+import static org.assertj.core.api.Assertions.*;
+
+@Slf4j
+@Transactional
+@ActiveProfiles("test")
+@SpringBootTest
+class GraduationRequirementCoursesServiceTest {
+
+    @Autowired GraduationRequirementCoursesService grcService;
+    @Autowired CourseService courseService;
+    @Autowired GraduationRequirementService grService;
+
+    @Test
+    void 졸업요건과목_저장_확인() {
+        //given
+        Course course = new Course("AIE-12235", "알고리즘", 3);
+        GraduationRequirements graduationRequirements
+                = new GraduationRequirements(AI_ENGINEERING, 130, 65, 65, 3.0F, 22);
+
+        graduationRequirements.setRequiredMajorCreditsEarned(30); //전필 30학점
+        graduationRequirements.setElectiveMajorCreditsEarned(35); //전선 35학점
+        graduationRequirements.setRequiredGeneralEducationCreditsEarned(25); //교필 25
+        graduationRequirements.setElectiveGeneralEducationCreditsEarned(40); //교선 40
+        graduationRequirements.validateCreditsConsistency();
+
+        Long courseId = courseService.addCourse(course);
+        Long grId = grService.addGR(graduationRequirements, 22);
+
+        grService.addCourseToGraduationRequirement(grId, 22, course, MAJOR_REQUIRED);
+
+        //when
+        List<GraduationRequirementsCourses> allGrc = grcService.findAllGrc(AI_ENGINEERING, 22);
+        List<GraduationRequirementsCourses> grcByCourseType = grcService.findGrcByCourseType(AI_ENGINEERING, MAJOR_REQUIRED, 22);
+
+        //then
+
+        for (GraduationRequirementsCourses grc : allGrc) {
+            log.info("과목 확인: " + grc.getCourse().getCourseNumber());
+            log.info("졸업요건 확인: " + grc.getGraduationRequirements().getDepartment());
+        }
+
+        for (GraduationRequirementsCourses grc : grcByCourseType) {
+            log.info("과목 확인: " + grc.getCourse().getCourseNumber());
+            log.info("졸업요건 확인: " + grc.getGraduationRequirements().getDepartment());
+        }
+
+        //assert 검증
+        assertThat(allGrc.get(0).getCourse().getCourseNumber()).isEqualTo("AIE-12235");
+        assertThat(allGrc.get(0).getGraduationRequirements().getDepartment()).isEqualTo(AI_ENGINEERING);
+
+        assertThat(grcByCourseType.get(0).getCourse().getCourseNumber()).isEqualTo("AIE-12235");
+        assertThat(grcByCourseType.get(0).getGraduationRequirements().getDepartment()).isEqualTo(AI_ENGINEERING);
+    }
+
+
+}

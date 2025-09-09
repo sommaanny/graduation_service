@@ -1,0 +1,11 @@
+version: "3.8"
+
+services:
+  graduation-service:
+    image: ${DOCKER_USERNAME}/graduation-service:latest
+    container_name: graduation-service
+    restart: always
+    env_file:
+      - .env
+    ports:
+      - "8080:8080"
