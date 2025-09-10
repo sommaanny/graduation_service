@@ -102,7 +102,7 @@ jobs:
           
           # 3. 최신 이미지 pull 및 docker-compose 재시작
           docker pull ${{ secrets.DOCKER_USERNAME }}/graduation-service:latest
-          docker-compose up -d
+          docker compose up -d
           
           # 4. 불필요한 이전 이미지 삭제
           docker image prune -f
