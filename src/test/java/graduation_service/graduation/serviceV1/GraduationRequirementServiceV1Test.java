@@ -118,7 +118,7 @@ class GraduationRequirementServiceV1Test {
         graduationRequirementService.addCourseToGraduationRequirement(grResponse.getId(), 22, courseRequest);
 
         //then
-        GraduationRequirementResponse updated = graduationRequirementService.findGR(grResponse.getId(), 22);
+        GraduationRequirementResponse updated = graduationRequirementService.findGR(grResponse.getId());
         assertThat(updated.getDepartment()).isEqualTo(AI_ENGINEERING);
     }
 
@@ -140,7 +140,7 @@ class GraduationRequirementServiceV1Test {
         GraduationRequirementResponse response = graduationRequirementService.addGR(request);
 
         //when
-        GraduationRequirementResponse find = graduationRequirementService.findGR(response.getId(), 22);
+        GraduationRequirementResponse find = graduationRequirementService.findGR(response.getId());
 
         //then
         assertThat(find.getId()).isEqualTo(response.getId());
@@ -226,10 +226,10 @@ class GraduationRequirementServiceV1Test {
         GraduationRequirementResponse response = graduationRequirementService.addGR(request);
 
         //when
-        graduationRequirementService.deleteGR(response.getId(), 22);
+        graduationRequirementService.deleteGR(response.getId());
 
         //then
-        assertThatThrownBy(() -> graduationRequirementService.findGR(response.getId(), 22))
+        assertThatThrownBy(() -> graduationRequirementService.findGR(response.getId()))
                 .isInstanceOf(NoSuchElementException.class)
                 .hasMessageContaining("졸업 요건을 찾을 수 없습니다.");
     }
@@ -237,7 +237,7 @@ class GraduationRequirementServiceV1Test {
     //삭제 실패
     @Test
     void 졸업요건_삭제_실패() {
-        assertThatThrownBy(() -> graduationRequirementService.deleteGR(9999L, 22))
+        assertThatThrownBy(() -> graduationRequirementService.deleteGR(9999L))
                 .isInstanceOf(NoSuchElementException.class)
                 .hasMessageContaining("삭제할 졸업 요건을 찾을 수 없습니다.");
     }
@@ -270,10 +270,10 @@ class GraduationRequirementServiceV1Test {
                 .build();
 
 
-        graduationRequirementService.updateGR(response.getId(), 22, updateDto);
+        graduationRequirementService.updateGR(response.getId(), updateDto);
 
         //then
-        GraduationRequirementResponse updated = graduationRequirementService.findGR(response.getId(), 22);
+        GraduationRequirementResponse updated = graduationRequirementService.findGR(response.getId());
 
         assertThat(updated.getTotalCredits()).isEqualTo(125);
         assertThat(updated.getMajorCredits()).isEqualTo(70);

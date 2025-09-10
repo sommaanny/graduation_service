@@ -60,9 +60,8 @@ public class GraduationRequirementController {
                             value = GraduationRequirementFindByIdExample.GRADUATION_REQUIREMENT_FIND_BY_ID_SUCCESS
                     )
             ))
-    public ApiResponse<GraduationRequirementResponse> findGraduationRequirement(@Parameter(description = "졸업요건 id") @PathVariable("id") Long id,
-                                                                                @Parameter(description = "연도") @RequestParam("year") int year) {
-        GraduationRequirementResponse gr = graduationRequirementService.findGR(id, year);
+    public ApiResponse<GraduationRequirementResponse> findGraduationRequirement(@Parameter(description = "졸업요건 id") @PathVariable("id") Long id) {
+        GraduationRequirementResponse gr = graduationRequirementService.findGR(id);
         return ApiResponse.success("졸업요건 조회 성공", gr);
     }
 
@@ -117,7 +116,7 @@ public class GraduationRequirementController {
             ))
     public ApiResponse<Void> deleteGraduationRequirement(@Parameter(description = "졸업요건 id") @PathVariable("id") Long id,
                                                          @Parameter(description = "연도") @RequestParam("year") int year) {
-        graduationRequirementService.deleteGR(id, year);
+        graduationRequirementService.deleteGR(id);
         return ApiResponse.success("졸업요건 삭제 성공, 졸업요건 id: " + id, null);
     }
 
@@ -139,7 +138,7 @@ public class GraduationRequirementController {
             @Parameter(description = "연도") @RequestParam("year") int year,
             @RequestBody @Valid @Schema(implementation = GraduationRequirementUpdateDto.class) GraduationRequirementUpdateDto updateDto) {
 
-        graduationRequirementService.updateGR(id, year, updateDto);
+        graduationRequirementService.updateGR(id, updateDto);
         return ApiResponse.success("졸업 요건 수정 성공, 졸업요건 id: " + id, null);
     }
 

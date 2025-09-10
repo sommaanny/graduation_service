@@ -62,7 +62,7 @@ public class GraduationRequirementServiceV1 {
         grc.setCourse(course);
         grc.setCourseType(courseRequest.getCourseType());
 
-        GraduationRequirements gr = graduationRequirementsRepository.findOne(grId, year).orElseThrow(() -> new NoSuchElementException("졸업 요건을 찾을 수 없습니다."));
+        GraduationRequirements gr = graduationRequirementsRepository.findOne(grId).orElseThrow(() -> new NoSuchElementException("졸업 요건을 찾을 수 없습니다."));
         gr.addGraduationRequirementsCourses(grc);
 
         return new GraduationCourseCreateResponse(grId, year, courseRequest.getCourseId(), courseRequest.getCourseType());
@@ -71,16 +71,16 @@ public class GraduationRequirementServiceV1 {
     //졸업요건에 핵심교양 조건 추가
     @Transactional
     public GraduationCoreSubjectCreateResponse addCoreSubjectTypes(Long grId, int year, CoreType coreType) {
-        GraduationRequirements graduationRequirements = graduationRequirementsRepository.findOne(grId, year).orElseThrow(() -> new NoSuchElementException("졸업 요건을 찾을 수 없습니다."));
+        GraduationRequirements graduationRequirements = graduationRequirementsRepository.findOne(grId).orElseThrow(() -> new NoSuchElementException("졸업 요건을 찾을 수 없습니다."));
         graduationRequirements.addCoreType(coreType);
 
         return new GraduationCoreSubjectCreateResponse(grId, year, coreType);
     }
 
     //조회
-    public GraduationRequirementResponse findGR(Long id, int year) {
+    public GraduationRequirementResponse findGR(Long id) {
         GraduationRequirements graduationRequirements = graduationRequirementsRepository
-                .findOne(id, year).orElseThrow(() -> new NoSuchElementException("졸업 요건을 찾을 수 없습니다."));
+                .findOne(id).orElseThrow(() -> new NoSuchElementException("졸업 요건을 찾을 수 없습니다."));
 
         return GraduationRequirementResponse.fromEntity(graduationRequirements);
     }
@@ -102,18 +102,18 @@ public class GraduationRequirementServiceV1 {
 
     //삭제
     @Transactional
-    public void deleteGR(Long id, int year) {
+    public void deleteGR(Long id) {
         GraduationRequirements gr = graduationRequirementsRepository
-                .findOne(id, year).orElseThrow(() -> new NoSuchElementException("삭제할 졸업 요건을 찾을 수 없습니다."));
+                .findOne(id).orElseThrow(() -> new NoSuchElementException("삭제할 졸업 요건을 찾을 수 없습니다."));
 
         graduationRequirementsRepository.delete(gr);
     }
 
     //변경
     @Transactional
-    public void updateGR(Long id, int year, GraduationRequirementUpdateDto updateDto) {
+    public void updateGR(Long id, GraduationRequirementUpdateDto updateDto) {
         GraduationRequirements gr = graduationRequirementsRepository
-                .findOne(id, year).orElseThrow(() -> new NoSuchElementException("졸업 요건을 찾을 수 없습니다."));
+                .findOne(id).orElseThrow(() -> new NoSuchElementException("졸업 요건을 찾을 수 없습니다."));
         gr.updateGraduationRequirement(updateDto);
         gr.validateCreditsConsistency();
     }
