@@ -60,8 +60,7 @@ public class GraduationRequirementController {
                             value = GraduationRequirementFindByIdExample.GRADUATION_REQUIREMENT_FIND_BY_ID_SUCCESS
                     )
             ))
-    public ApiResponse<GraduationRequirementResponse> findGraduationRequirement(@Parameter(description = "졸업요건 id") @PathVariable("id") Long id,
-                                                                                @Parameter(description = "연도") @RequestParam("year") int year) {
+    public ApiResponse<GraduationRequirementResponse> findGraduationRequirement(@Parameter(description = "졸업요건 id") @PathVariable("id") Long id) {
         GraduationRequirementResponse gr = graduationRequirementService.findGR(id);
         return ApiResponse.success("졸업요건 조회 성공", gr);
     }
