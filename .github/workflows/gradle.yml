@@ -31,8 +31,8 @@ jobs:
     - name: Setup Gradle
       uses: gradle/actions/setup-gradle@af1da67850ed9a4cedd57bfd976089dd991e2582 # v4.0.0
 
-    - name: Build with Gradle Wrapper
-      run: ./gradlew build
+    - name: Run test #멀티 스테이지 방식을 사용했기에 jar 빌드는 도커가 대신함 따라서 테스트만 진행
+      run: ./gradlew test
 
 
   # 2. Docker 이미지 빌드 및 푸시 작업 (main 브랜치 push 시에만 실행)
