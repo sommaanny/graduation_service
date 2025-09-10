@@ -99,6 +99,7 @@ jobs:
           echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> .env
           echo "ADMIN_INITIAL_ID=${{ secrets.ADMIN_ID }}" >> .env
           echo "ADMIN_INITIAL_PW=${{ secrets.ADMIN_PW }}" >> .env
+          echo "DOCKER_USERNAME=${{ secrets.DOCKER_USERNAME }}" >> .env
           
           # 3. 최신 이미지 pull 및 docker-compose 재시작
           docker pull ${{ secrets.DOCKER_USERNAME }}/graduation-service:latest
