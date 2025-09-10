@@ -40,6 +40,9 @@ jobs:
     # 프로젝트 빌드가 성공해야만 이 작업을 실행
     needs: build
     
+     # 이벤트가 'main' 브랜치에 대한 'push'일 때만 이 작업을 실행합니다.
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    
     runs-on: ubuntu-latest
     permissions:
       contents: read
