@@ -94,7 +94,7 @@ jobs:
           fi
           
           # 2. .env 파일 생성
-          echo "DB_URL=jdbc:mysql://${{ secrets.RDS_ENDPOINT }}:3306/graduation?serverTimezone=Asia/Seoul&characterEncoding=UTF-8" > .env
+          echo "DB_URL=jdbc:mysql://${{ secrets.RDS_ENDPOINT }}:3306/graduationdb?serverTimezone=Asia/Seoul&characterEncoding=UTF-8" > .env
           echo "DB_USERNAME=${{ secrets.DB_USERNAME }}" >> .env
           echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> .env
           echo "ADMIN_INITIAL_ID=${{ secrets.ADMIN_ID }}" >> .env
