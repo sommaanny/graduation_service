@@ -28,8 +28,10 @@ import static org.assertj.core.api.Assertions.*;
 class GraduationRequirementServiceTest {
 
     @Autowired GraduationRequirementService graduationRequirementService;
+
     @Autowired
-    GraduationRequirementCoursesRepository grcRepository;
+    CourseService courseService;
+
 
     @Test
     void 졸업요건_저장() {
@@ -100,6 +102,7 @@ class GraduationRequirementServiceTest {
         //Course DB에 있는 데이터라고 가정
         Course course = new Course("AIE-12234", "기계학습", 3);
         CourseType courseType = MAJOR_REQUIRED; //전공필수
+        courseService.addCourse(course);
 
         //when
         graduationRequirementService.addCourseToGraduationRequirement(saveId, 22, course, courseType);
