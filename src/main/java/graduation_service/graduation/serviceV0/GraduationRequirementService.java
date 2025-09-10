@@ -46,20 +46,20 @@ public class GraduationRequirementService {
         grc.setCourse(course);
         grc.setCourseType(courseType);
 
-        GraduationRequirements gr = findGR(grId, year);
+        GraduationRequirements gr = findGR(grId);
         gr.addGraduationRequirementsCourses(grc);
     }
 
     //졸업요건에 핵심교양 조건 추가
     @Transactional
     public void addCoreSubjectTypes(Long grId, int year, CoreType coreType) {
-        GraduationRequirements graduationRequirements = findGR(grId, year);
+        GraduationRequirements graduationRequirements = findGR(grId);
         graduationRequirements.addCoreType(coreType);
     }
 
     //조회
-    public GraduationRequirements findGR(Long id, int year) {
-        return graduationRequirementsRepository.findOne(id, year).orElseThrow(() -> new NoSuchElementException("졸업 요건을 찾을 수 없습니다."));
+    public GraduationRequirements findGR(Long id) {
+        return graduationRequirementsRepository.findOne(id).orElseThrow(() -> new NoSuchElementException("졸업 요건을 찾을 수 없습니다."));
     }
 
     //학과로 조회
@@ -74,8 +74,8 @@ public class GraduationRequirementService {
 
     //삭제
     @Transactional
-    public void deleteGR(Long id, int year) {
-        GraduationRequirements gr = findGR(id, year);
+    public void deleteGR(Long id) {
+        GraduationRequirements gr = findGR(id);
         if (gr == null) {
             throw new IllegalStateException("삭제할 졸업요건이 없습니다");
         }
@@ -84,8 +84,8 @@ public class GraduationRequirementService {
 
     //변경
     @Transactional
-    public void updateGR(Long id, int year, GraduationRequirementUpdateDto updateDto) {
-        GraduationRequirements gr = findGR(id, year);
+    public void updateGR(Long id, GraduationRequirementUpdateDto updateDto) {
+        GraduationRequirements gr = findGR(id);
         gr.updateGraduationRequirement(updateDto);
     }
 

@@ -20,11 +20,9 @@ public class GraduationRequirementsRepository {
         em.persist(graduationRequirements);
     }
 
-    public Optional<GraduationRequirements> findOne(Long id, int graduationRequirementsYear) {
-        List<GraduationRequirements> result = em.createQuery("select g from GraduationRequirements g where g.graduationRequirementsYear = :graduationRequirementsYear " +
-                                "and g.id = :id"
+    public Optional<GraduationRequirements> findOne(Long id) {
+        List<GraduationRequirements> result = em.createQuery("select g from GraduationRequirements g where g.id = :id"
                         , GraduationRequirements.class)
-                .setParameter("graduationRequirementsYear", graduationRequirementsYear)
                 .setParameter("id", id)
                 .getResultList();
 

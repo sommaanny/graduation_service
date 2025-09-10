@@ -108,7 +108,7 @@ class GraduationRequirementServiceTest {
         graduationRequirementService.addCourseToGraduationRequirement(saveId, 22, course, courseType);
 
         //then
-        GraduationRequirements findGR = graduationRequirementService.findGR(saveId, 22);
+        GraduationRequirements findGR = graduationRequirementService.findGR(saveId);
         List<GraduationRequirementsCourses> graduationRequirementsCourses =
                 findGR.getGraduationRequirementsCourses();
 
@@ -150,7 +150,7 @@ class GraduationRequirementServiceTest {
         Long saveId = graduationRequirementService.addGR(graduationRequirements, 22);
 
         //when
-        GraduationRequirements findGR = graduationRequirementService.findGR(saveId, 22);
+        GraduationRequirements findGR = graduationRequirementService.findGR(saveId);
 
         //then
         assertThat(findGR.getId()).isEqualTo(saveId);
@@ -253,7 +253,7 @@ class GraduationRequirementServiceTest {
         Long saveId2 = graduationRequirementService.addGR(graduationRequirements2, 22);
 
         //when
-        graduationRequirementService.deleteGR(saveId1, 22);
+        graduationRequirementService.deleteGR(saveId1);
 
         //then
         List<GraduationRequirements> allGR = graduationRequirementService.findAllGR(22);
@@ -266,7 +266,7 @@ class GraduationRequirementServiceTest {
     //삭제 실패
     @Test
     void 졸업요건_삭제_실패() {
-        assertThatThrownBy(() -> graduationRequirementService.deleteGR(1L, 22))
+        assertThatThrownBy(() -> graduationRequirementService.deleteGR(1L))
                 .isInstanceOf(NoSuchElementException.class)
                 .hasMessageContaining("졸업 요건을 찾을 수 없습니다.");
     }
