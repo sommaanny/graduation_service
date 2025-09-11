@@ -156,10 +156,9 @@ public class GraduationRequirementController {
                     )
             ))
     public ApiResponse<GraduationCourseCreateResponse> addGraduationCourse(@Parameter(description = "졸업요건 id") @PathVariable("grId") Long id,
-                                                                           @Parameter(description = "연도") @RequestParam("year") int year,
                                                                            @RequestBody @Valid @Schema(implementation = CourseRequest.class) CourseRequest courseRequest) {
 
-        GraduationCourseCreateResponse graduationCourseCreateResponse = graduationRequirementService.addCourseToGraduationRequirement(id, year, courseRequest);
+        GraduationCourseCreateResponse graduationCourseCreateResponse = graduationRequirementService.addCourseToGraduationRequirement(id, courseRequest);
 
         return ApiResponse.success("졸업 요건 과목 등록 성공", graduationCourseCreateResponse);
     }

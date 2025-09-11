@@ -59,19 +59,16 @@ public class DataInitializer implements CommandLineRunner {
 
         graduationRequirementService.addCourseToGraduationRequirement(
                 graduationRequirementResponse.getId(),
-                graduationRequirementResponse.getGraduationRequirementsYear(),
                 courseRequest
                 );
 
         graduationRequirementService.addCourseToGraduationRequirement(
                 graduationRequirementResponse.getId(),
-                graduationRequirementResponse.getGraduationRequirementsYear(),
                 courseRequest1
         );
 
         graduationRequirementService.addCourseToGraduationRequirement(
                 graduationRequirementResponse.getId(),
-                graduationRequirementResponse.getGraduationRequirementsYear(),
                 courseRequest2
         );
 

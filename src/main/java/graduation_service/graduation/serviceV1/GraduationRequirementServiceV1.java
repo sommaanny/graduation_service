@@ -51,7 +51,7 @@ public class GraduationRequirementServiceV1 {
 
     //졸업요건 과목 추가
     @Transactional
-    public GraduationCourseCreateResponse addCourseToGraduationRequirement(Long grId, int year, CourseRequest courseRequest) {
+    public GraduationCourseCreateResponse addCourseToGraduationRequirement(Long grId, CourseRequest courseRequest) {
         Course course = courseRepository.findOne(courseRequest.getCourseId());
 
         if (course == null) {
@@ -65,7 +65,7 @@ public class GraduationRequirementServiceV1 {
         GraduationRequirements gr = graduationRequirementsRepository.findOne(grId).orElseThrow(() -> new NoSuchElementException("졸업 요건을 찾을 수 없습니다."));
         gr.addGraduationRequirementsCourses(grc);
 
-        return new GraduationCourseCreateResponse(grId, year, courseRequest.getCourseId(), courseRequest.getCourseType());
+        return new GraduationCourseCreateResponse(grId, gr.getGraduationRequirementsYear(), courseRequest.getCourseId(), courseRequest.getCourseType());
     }
 
     //졸업요건에 핵심교양 조건 추가

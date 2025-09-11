@@ -52,7 +52,7 @@ class GraduationRequirementCoursesServiceV1Test {
 
         CourseRequest courseRequest = new CourseRequest(courseResponse.getId(), MAJOR_REQUIRED);
 
-        grService.addCourseToGraduationRequirement(graduationRequirementResponse.getId(), graduationRequirementResponse.getGraduationRequirementsYear(), courseRequest);
+        grService.addCourseToGraduationRequirement(graduationRequirementResponse.getId(), courseRequest);
 
         //when
         GraduationCourseResponse allGrc = grcService.findAllGrc(AI_ENGINEERING, 22);
