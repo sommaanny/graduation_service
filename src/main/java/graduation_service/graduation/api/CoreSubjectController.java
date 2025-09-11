@@ -98,11 +98,10 @@ public class CoreSubjectController {
                             value = CoreSubjectFindExample.CORE_SUBJECT_FIND_SUCCESS
                     )
             ))
-    public ApiResponse<List<CoreSubjectResponse>> findByCoreType(@Parameter(description = "핵심교양 타입") @RequestParam("coreType") String coreType,
-                                                                 @Parameter(description = "연도") @RequestParam("curriculumYear") int curriculumYear) {
+    public ApiResponse<List<CoreSubjectResponse>> findByCoreType(@Parameter(description = "핵심교양 타입") @RequestParam("coreType") String coreType) {
 
         CoreType enumCoreType = CoreType.fromUrlName(coreType);
-        List<CoreSubjectResponse> byCoreType = coreSubjectService.findByCoreType(enumCoreType, curriculumYear);
+        List<CoreSubjectResponse> byCoreType = coreSubjectService.findByCoreType(enumCoreType);
 
         return ApiResponse.success("핵심교양 조회 성공", byCoreType);
     }

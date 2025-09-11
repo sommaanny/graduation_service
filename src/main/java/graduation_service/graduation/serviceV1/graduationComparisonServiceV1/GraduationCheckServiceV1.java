@@ -79,7 +79,7 @@ public class GraduationCheckServiceV1 {
     public List<CoreType> checkRemainingCoreTypes(Transcript transcript, GraduationRequirements gr) {
         Set<String> completedCourseNumbers = transcript.getCompletedCourseNumbers(); // 이수과목들 추출
 
-        return coreSubjectService.checkCoreSubject(completedCourseNumbers, gr.getGraduationRequirementsYear(), gr);
+        return coreSubjectService.checkCoreSubject(completedCourseNumbers, gr);
     }
 
     //이수 못한 과목 반환

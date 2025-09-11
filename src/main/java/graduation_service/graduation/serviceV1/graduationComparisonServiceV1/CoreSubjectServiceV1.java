@@ -62,8 +62,8 @@ public class CoreSubjectServiceV1 {
 
     }
 
-    public List<CoreSubjectResponse> findByCoreType(CoreType coreType, int curriculumYear) {
-        return coreSubjectCurriculumRepository.findByCoreType(coreType, curriculumYear).stream()
+    public List<CoreSubjectResponse> findByCoreType(CoreType coreType) {
+        return coreSubjectCurriculumRepository.findByCoreType(coreType).stream()
                 .map(CoreSubjectResponse::fromEntity)
                 .collect(Collectors.toList());
     }
@@ -89,7 +89,7 @@ public class CoreSubjectServiceV1 {
         Set<CoreType> notCompletedTypes = new HashSet<>(requiredCoreTypes); // 결과 반환을 위한 Set (빠른 제거)
 
         for (CoreType coreType : requiredCoreTypes) {
-            List<CoreSubjectCurriculum> subjects = coreSubjectCurriculumRepository.findByCoreType(coreType, curriculumYear);
+            List<CoreSubjectCurriculum> subjects = coreSubjectCurriculumRepository.findByCoreType(coreType);
 
             for (CoreSubjectCurriculum subject : subjects) {
                 String courseNumber = subject.getCourse().getCourseNumber();
