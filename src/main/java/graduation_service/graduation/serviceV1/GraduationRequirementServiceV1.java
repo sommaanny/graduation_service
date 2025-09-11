@@ -77,6 +77,13 @@ public class GraduationRequirementServiceV1 {
         return new GraduationCoreSubjectCreateResponse(grId, year, coreType);
     }
 
+    //졸업요건에 핵심교양 조건 삭제
+    @Transactional
+    public void deleteCoreSubjectTypes(Long grId, CoreType coreType) {
+        GraduationRequirements graduationRequirements = graduationRequirementsRepository.findOne(grId).orElseThrow(() -> new NoSuchElementException("졸업 요건을 찾을 수 없습니다."));
+        graduationRequirements.deleteCoreType(coreType);
+    }
+
     //조회
     public GraduationRequirementResponse findGR(Long id) {
         GraduationRequirements graduationRequirements = graduationRequirementsRepository

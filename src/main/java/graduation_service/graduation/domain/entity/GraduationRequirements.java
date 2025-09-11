@@ -135,6 +135,11 @@ public class GraduationRequirements {
         coreTypes.add(coreType);
     }
 
+    //핵심교양 삭제
+    public void deleteCoreType(CoreType coreType) {
+        coreTypes.remove(coreType);
+    }
+
     //제약조건
     public void validateCreditsConsistency() {
         if (totalCreditsEarned != majorCreditsEarned + generalEducationCreditsEarned) {
