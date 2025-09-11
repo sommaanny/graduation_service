@@ -115,7 +115,7 @@ class GraduationRequirementServiceV1Test {
 
         //when
         CourseRequest courseRequest = new CourseRequest(courseResponse.getId(), MAJOR_REQUIRED);
-        graduationRequirementService.addCourseToGraduationRequirement(grResponse.getId(), 22, courseRequest);
+        graduationRequirementService.addCourseToGraduationRequirement(grResponse.getId(), courseRequest);
 
         //then
         GraduationRequirementResponse updated = graduationRequirementService.findGR(grResponse.getId());
