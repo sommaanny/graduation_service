@@ -209,7 +209,7 @@ class CoreSubjectServiceTest {
         GraduationRequirements graduationRequirements = graduationRequirementService.findByGRDepartment(AI_ENGINEERING, 22).get();
 
         //when
-        List<CoreType> coreTypes = coreSubjectService.checkCoreSubject(completedCourseNumbers, 22, graduationRequirements);
+        List<CoreType> coreTypes = coreSubjectService.checkCoreSubject(completedCourseNumbers, graduationRequirements);
 
 
         //then

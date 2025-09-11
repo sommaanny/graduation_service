@@ -35,12 +35,10 @@ public class CoreSubjectCurriculumRepository {
                 .stream().findFirst();
     }
 
-    //교양 타입으로 조회
-    public List<CoreSubjectCurriculum> findByCoreType(CoreType coreType, int curriculumYear) {
-        return em.createQuery("select c from CoreSubjectCurriculum c where c.coreType = :coreType " +
-                        "and c.curriculumYear = :curriculumYear", CoreSubjectCurriculum.class)
+    //핵심교양 타입으로 조회
+    public List<CoreSubjectCurriculum> findByCoreType(CoreType coreType) {
+        return em.createQuery("select c from CoreSubjectCurriculum c where c.coreType = :coreType", CoreSubjectCurriculum.class)
                 .setParameter("coreType", coreType)
-                .setParameter("curriculumYear", curriculumYear)
                 .getResultList();
     }
 

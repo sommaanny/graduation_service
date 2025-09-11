@@ -47,17 +47,17 @@ public class CoreSubjectService {
     }
 
     public List<CoreSubjectCurriculum> findByCoreType(CoreType coreType, int curriculumYear) {
-        return coreSubjectCurriculumRepository.findByCoreType(coreType, curriculumYear);
+        return coreSubjectCurriculumRepository.findByCoreType(coreType);
     }
 
 
     // 핵심교양 이수 체크
-    public List<CoreType> checkCoreSubject(Set<String> courseNumberSet, int curriculumYear, GraduationRequirements graduationRequirements) {
+    public List<CoreType> checkCoreSubject(Set<String> courseNumberSet, GraduationRequirements graduationRequirements) {
         List<CoreType> requiredCoreTypes = graduationRequirements.getCoreTypes(); // 졸업요건에 명시된 핵심교양 타입 목록
         Set<CoreType> notCompletedTypes = new HashSet<>(requiredCoreTypes); // 결과 반환을 위한 Set (빠른 제거)
 
         for (CoreType coreType : requiredCoreTypes) {
-            List<CoreSubjectCurriculum> subjects = coreSubjectCurriculumRepository.findByCoreType(coreType, curriculumYear);
+            List<CoreSubjectCurriculum> subjects = coreSubjectCurriculumRepository.findByCoreType(coreType);
 
             for (CoreSubjectCurriculum subject : subjects) {
                 String courseNumber = subject.getCourse().getCourseNumber();
