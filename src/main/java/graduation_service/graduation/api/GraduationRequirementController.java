@@ -43,7 +43,7 @@ public class GraduationRequirementController {
                     )
             ))
     public ApiResponse<GraduationRequirementResponse> saveGraduationRequirement(@RequestBody @Valid @Schema(implementation = GraduationRequirementCreateRequest.class)
-                                                                                    GraduationRequirementCreateRequest graduationRequirementCreateRequest) {
+                                                                                GraduationRequirementCreateRequest graduationRequirementCreateRequest) {
         GraduationRequirementResponse graduationRequirementResponse = graduationRequirementService.addGR(graduationRequirementCreateRequest);
         return ApiResponse.success("졸업요건 등록 성공", graduationRequirementResponse);
     }
@@ -102,7 +102,6 @@ public class GraduationRequirementController {
     }
 
 
-
     @DeleteMapping("/graduation-requirement/{id}")
     @Operation(summary = "졸업요건 삭제")
     @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "졸업요건 삭제 성공",
@@ -119,7 +118,6 @@ public class GraduationRequirementController {
         graduationRequirementService.deleteGR(id);
         return ApiResponse.success("졸업요건 삭제 성공, 졸업요건 id: " + id, null);
     }
-
 
 
     @PutMapping("/graduation-requirement/{id}")
@@ -143,7 +141,6 @@ public class GraduationRequirementController {
     }
 
 
-
     @PostMapping("/graduation-requirement/{grId}/courses")
     @Operation(summary = "졸업요건 과목 등록", description = "졸업요건에 필요한 과목을 추가하는 API")
     @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "졸업요건 과목 등록 성공",
@@ -162,8 +159,6 @@ public class GraduationRequirementController {
 
         return ApiResponse.success("졸업 요건 과목 등록 성공", graduationCourseCreateResponse);
     }
-
-
 
 
     @PostMapping("/graduation-requirement/{grId}/core-subject")
@@ -185,5 +180,16 @@ public class GraduationRequirementController {
         GraduationCoreSubjectCreateResponse graduationCoreSubjectCreateResponse = graduationRequirementService.addCoreSubjectTypes(id, year, coreType);
 
         return ApiResponse.success("졸업요건 핵심교양 등록 성공", graduationCoreSubjectCreateResponse);
+    }
+
+    @DeleteMapping("/graduation-requirement/{grId}/core-subject")
+    public ApiResponse<Void> deleteGraduationCoreSubject(@PathVariable Long grId,
+                                                         @RequestParam("urlCoreType") String urlCoreType) {
+
+        CoreType coreType = CoreType.fromUrlName(urlCoreType);
+
+        graduationRequirementService.deleteCoreSubjectTypes(grId, coreType);
+
+        return ApiResponse.success("졸업요건 id=" + grId + "에서 핵심교양 타입 " + urlCoreType + " 삭제 성공", null);
     }
 }

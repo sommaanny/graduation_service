@@ -1,5 +1,6 @@
 package graduation_service.graduation.serviceV1;
 
+import graduation_service.graduation.domain.enums.CoreType;
 import graduation_service.graduation.dto.GraduationRequirementUpdateDto;
 import graduation_service.graduation.dto.requestDto.courseDto.CourseCreateRequest;
 import graduation_service.graduation.dto.requestDto.courseDto.CourseRequest;
@@ -8,6 +9,7 @@ import graduation_service.graduation.dto.responseDto.courseReponse.CourseRespons
 import graduation_service.graduation.dto.responseDto.graduationResponse.GraduationRequirementResponse;
 import jakarta.persistence.EntityManager;
 import lombok.extern.slf4j.Slf4j;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -17,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+import static graduation_service.graduation.domain.enums.CoreType.*;
 import static graduation_service.graduation.domain.enums.CourseType.MAJOR_REQUIRED;
 import static graduation_service.graduation.domain.enums.Department.AI_ENGINEERING;
 import static graduation_service.graduation.domain.enums.Department.COMPUTER_SCIENCE;
@@ -281,6 +284,40 @@ class GraduationRequirementServiceV1Test {
         assertThat(updated.getGpa()).isEqualTo(3.5F);
     }
 
+    //졸업요건 핵심교양 삭제
+    @Test
+    void 졸업요건_핵심교양_삭제() {
+        //졸업요건 요청
+        GraduationRequirementCreateRequest request = GraduationRequirementCreateRequest.builder()
+                .department(COMPUTER_SCIENCE)
+                .totalCredits(130)
+                .majorCredits(65)
+                .requiredMajorCredits(30)
+                .generalEducationCredits(65)
+                .requiredGeneralEducationCredits(30)
+                .gpa(3.0F)
+                .graduationRequirementsYear(22)
+                .build();
+
+        //졸업요건 저장
+        GraduationRequirementResponse response = graduationRequirementService.addGR(request);
+
+        Long grId = response.getId();
+
+        //졸업요건 핵심교양 추가
+        graduationRequirementService.addCoreSubjectTypes(grId, 22, CORE_1);
+
+        GraduationRequirementResponse gr = graduationRequirementService.findGR(grId);
+
+        //졸업요건에 핵심교양 추가 검증
+        Assertions.assertThat(gr.getCoreTypes()).contains(CORE_1);
+
+        //핵심교양 삭제
+        graduationRequirementService.deleteCoreSubjectTypes(grId, CORE_1);
+
+        //핵심교양 삭제 검증
+        Assertions.assertThat(gr.getCoreTypes().size()).isEqualTo(0);
+    }
 
 
 }
