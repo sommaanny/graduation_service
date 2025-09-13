@@ -2,6 +2,7 @@ package graduation_service.graduation.serviceV1;
 
 import graduation_service.graduation.dto.requestDto.courseDto.CourseCreateRequest;
 import graduation_service.graduation.dto.responseDto.courseReponse.CourseResponse;
+import jakarta.persistence.EntityManager;
 import lombok.extern.slf4j.Slf4j;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -22,6 +23,9 @@ class CourseServiceV1Test {
 
     @Autowired
     CourseServiceV1 courseService;
+
+    @Autowired
+    EntityManager em;
 
     private CourseCreateRequest createRequest(String number, String title, int credits) {
         CourseCreateRequest request = new CourseCreateRequest();
@@ -58,6 +62,9 @@ class CourseServiceV1Test {
         CourseCreateRequest request = createRequest("AIE-12234", "기계학습", 3);
         CourseResponse saved = courseService.addCourse(request);
 
+        em.flush();
+        em.clear();
+
         CourseResponse find = courseService.findCourse(saved.getId());
         Assertions.assertThat(find.getCourseNumber()).isEqualTo("AIE-12234");
     }
@@ -66,6 +73,9 @@ class CourseServiceV1Test {
     void 전체과목조회() {
         courseService.addCourse(createRequest("AIE-12234", "기계학습", 3));
         courseService.addCourse(createRequest("AIE-12235", "알고리즘", 3));
+
+        em.flush();
+        em.clear();
 
         List<CourseResponse> result = courseService.findAllCourse();
 
@@ -78,6 +88,9 @@ class CourseServiceV1Test {
     void 과목이름조회() {
         courseService.addCourse(createRequest("AIE-12234", "기계학습", 3));
 
+        em.flush();
+        em.clear();
+
         List<CourseResponse> result = courseService.findByCourseTitle("기계학습");
 
         Assertions.assertThat(result).hasSize(1);
@@ -89,6 +102,9 @@ class CourseServiceV1Test {
         courseService.addCourse(createRequest("AIE-12234", "기계학습", 3));
         courseService.addCourse(createRequest("AIE-12235", "알고리즘", 3));
 
+        em.flush();
+        em.clear();
+
         List<CourseResponse> result = courseService.findByCourseCredit(3);
 
         Assertions.assertThat(result).hasSize(2);
@@ -98,6 +114,9 @@ class CourseServiceV1Test {
     @Test
     void 학수번호조회() {
         courseService.addCourse(createRequest("AIE-12234", "기계학습", 3));
+
+        em.flush();
+        em.clear();
 
         CourseResponse result = courseService.findByCourseNumber("AIE-12234");
 
