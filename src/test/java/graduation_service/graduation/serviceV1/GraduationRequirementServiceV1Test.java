@@ -319,5 +319,4 @@ class GraduationRequirementServiceV1Test {
         Assertions.assertThat(gr.getCoreTypes().size()).isEqualTo(0);
     }
 
-
 }

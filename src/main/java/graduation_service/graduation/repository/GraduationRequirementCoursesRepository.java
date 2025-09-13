@@ -17,7 +17,7 @@ public class GraduationRequirementCoursesRepository {
 
     //특정 학과의 졸업요건 과목 전체 조회
     public List<GraduationRequirementsCourses> findAll(Department department, int grYear) {
-        return em.createQuery("select g from GraduationRequirementsCourses g where g.graduationRequirements.department = :department " +
+        return em.createQuery("select g from GraduationRequirementsCourses g join fetch g.course where g.graduationRequirements.department = :department " +
                                 "and g.graduationRequirements.graduationRequirementsYear = :grYear"
                         , GraduationRequirementsCourses.class)
                 .setParameter("department", department)
@@ -27,7 +27,7 @@ public class GraduationRequirementCoursesRepository {
 
     //특정 학과의 졸업요건 과목 중 과목 타입(전공, 교양 ..)으로 조회
     public List<GraduationRequirementsCourses> findByCourseType(Department department, CourseType courseType, int grYear) {
-        return em.createQuery("select g from GraduationRequirementsCourses g where g.graduationRequirements.department = :department" +
+        return em.createQuery("select g from GraduationRequirementsCourses g join fetch g.course where g.graduationRequirements.department = :department" +
                                 " and g.courseType = :courseType" +
                                 " and g.graduationRequirements.graduationRequirementsYear = :grYear"
                         , GraduationRequirementsCourses.class)

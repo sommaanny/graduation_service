@@ -26,7 +26,7 @@ public class CoreSubjectCurriculumRepository {
 
     //과목으로 조회
     public Optional<CoreSubjectCurriculum> findByCourse(Course course, int curriculumYear) {
-        return em.createQuery("select c from CoreSubjectCurriculum c where c.course = :course " +
+        return em.createQuery("select c from CoreSubjectCurriculum c join fetch c.course where c.course = :course " +
                         "and c.curriculumYear = :curriculumYear", CoreSubjectCurriculum.class)
                 .setParameter("course", course)
                 .setParameter("curriculumYear", curriculumYear)
@@ -37,7 +37,7 @@ public class CoreSubjectCurriculumRepository {
 
     //핵심교양 타입으로 조회
     public List<CoreSubjectCurriculum> findByCoreType(CoreType coreType) {
-        return em.createQuery("select c from CoreSubjectCurriculum c where c.coreType = :coreType", CoreSubjectCurriculum.class)
+        return em.createQuery("select c from CoreSubjectCurriculum c join fetch c.course where c.coreType = :coreType", CoreSubjectCurriculum.class)
                 .setParameter("coreType", coreType)
                 .getResultList();
     }
@@ -46,13 +46,13 @@ public class CoreSubjectCurriculumRepository {
 
     //전체 조회
     public List<CoreSubjectCurriculum> findAll() {
-        return em.createQuery("select c from CoreSubjectCurriculum c", CoreSubjectCurriculum.class)
+        return em.createQuery("select c from CoreSubjectCurriculum c join fetch c.course", CoreSubjectCurriculum.class)
                 .getResultList();
     }
 
     //특정 년도 조회
     public List<CoreSubjectCurriculum> findByYear(int curriculumYear) {
-        return em.createQuery("select c from CoreSubjectCurriculum c where c.curriculumYear = :curriculumYear", CoreSubjectCurriculum.class)
+        return em.createQuery("select c from CoreSubjectCurriculum c join fetch c.course where c.curriculumYear = :curriculumYear", CoreSubjectCurriculum.class)
                 .setParameter("curriculumYear", curriculumYear)
                 .getResultList();
     }

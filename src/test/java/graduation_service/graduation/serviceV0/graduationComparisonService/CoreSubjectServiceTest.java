@@ -9,6 +9,7 @@ import graduation_service.graduation.domain.pojo.Transcript;
 import graduation_service.graduation.repository.CoreSubjectCurriculumRepository;
 import graduation_service.graduation.serviceV0.CourseService;
 import graduation_service.graduation.serviceV0.GraduationRequirementService;
+import jakarta.persistence.EntityManager;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -53,6 +54,9 @@ class CoreSubjectServiceTest {
     @Autowired
     GraduationRequirementService graduationRequirementService;
 
+    @Autowired
+    EntityManager em;
+
     @BeforeEach
     void setUp() {
         //과목추가
@@ -65,6 +69,9 @@ class CoreSubjectServiceTest {
         courseService.addCourse(course2);
         courseService.addCourse(course3);
         courseService.addCourse(course4);
+
+        em.flush();
+        em.clear();
 
         //졸업요건 추가
         GraduationRequirements gr = new GraduationRequirements(AI_ENGINEERING, 130, 65, 65, 3.0F, 22);
@@ -88,6 +95,10 @@ class CoreSubjectServiceTest {
         grService.addCoreSubjectTypes(gr.getId(), gr.getGraduationRequirementsYear(), CORE_2);
         grService.addCoreSubjectTypes(gr.getId(), gr.getGraduationRequirementsYear(), CORE_4);
         grService.addCoreSubjectTypes(gr.getId(), gr.getGraduationRequirementsYear(), CORE_5);
+
+        em.flush();
+        em.clear();
+        log.info("========== 셋업 종료 ===========");
     }
 
     @Test
@@ -128,6 +139,9 @@ class CoreSubjectServiceTest {
         coreSubjectCurriculum.assignCourse(findCourse);
 
         Long saveId = coreSubjectService.addCoreSubjectCurriculum(coreSubjectCurriculum);
+
+        em.flush();
+        em.clear();
 
         //when
         Optional<CoreSubjectCurriculum> byCourse = coreSubjectService.findByCourse(findCourse, 22);

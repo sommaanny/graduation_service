@@ -6,6 +6,7 @@ import graduation_service.graduation.dto.requestDto.graduationRequirementDto.Gra
 import graduation_service.graduation.dto.responseDto.courseReponse.CourseResponse;
 import graduation_service.graduation.dto.responseDto.graduationResponse.GraduationCourseResponse;
 import graduation_service.graduation.dto.responseDto.graduationResponse.GraduationRequirementResponse;
+import jakarta.persistence.EntityManager;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,12 +31,20 @@ class GraduationRequirementCoursesServiceV1Test {
     @Autowired
     GraduationRequirementServiceV1 grService;
 
+    @Autowired
+    EntityManager em;
+
     @Test
     void 졸업요건과목_저장_확인() {
         //given
         CourseCreateRequest courseCreateRequest = new CourseCreateRequest("AIE3001", "알고리즘", 3);
+        CourseCreateRequest courseCreateRequest2 = new CourseCreateRequest("AIE3002", "기계학습", 3);
 
         CourseResponse courseResponse = courseService.addCourse(courseCreateRequest);
+        CourseResponse courseResponse2 = courseService.addCourse(courseCreateRequest2);
+
+        em.flush();
+        em.clear();
 
         GraduationRequirementCreateRequest graduationRequirementCreateRequest = GraduationRequirementCreateRequest.builder()
                         .department(AI_ENGINEERING)
@@ -50,11 +59,20 @@ class GraduationRequirementCoursesServiceV1Test {
 
         GraduationRequirementResponse graduationRequirementResponse = grService.addGR(graduationRequirementCreateRequest);
 
+        em.flush();
+        em.clear();
+
         CourseRequest courseRequest = new CourseRequest(courseResponse.getId(), MAJOR_REQUIRED);
+        CourseRequest courseRequest2 = new CourseRequest(courseResponse2.getId(), MAJOR_REQUIRED);
 
         grService.addCourseToGraduationRequirement(graduationRequirementResponse.getId(), courseRequest);
+        grService.addCourseToGraduationRequirement(graduationRequirementResponse.getId(), courseRequest2);
+
+        em.flush();
+        em.clear();
 
         //when
+        log.info("========= 졸업요건 과목 조회 시작 ==========");
         GraduationCourseResponse allGrc = grcService.findAllGrc(AI_ENGINEERING, 22);
         GraduationCourseResponse grcByCourseType = grcService.findGrcByCourseType(AI_ENGINEERING, MAJOR_REQUIRED, 22);
 
