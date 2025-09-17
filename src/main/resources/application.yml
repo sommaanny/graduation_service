@@ -17,7 +17,7 @@ spring:
     username: ${DB_USERNAME}
     password: ${DB_PASSWORD}
     hikari:
-      maximum-pool-size: 15
+      maximum-pool-size: 7
 
   http:
     encoding:
