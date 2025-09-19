@@ -6,6 +6,7 @@ import graduation_service.graduation.domain.entity.GraduationRequirements;
 import graduation_service.graduation.domain.enums.CoreType;
 import graduation_service.graduation.dto.requestDto.coreSubjectDto.CoreSubjectCreateRequest;
 import graduation_service.graduation.dto.responseDto.coreResponse.CoreSubjectResponse;
+import graduation_service.graduation.dto.responseDto.graduationResponse.GraduationRequirementResponse;
 import graduation_service.graduation.repository.CoreSubjectCurriculumRepository;
 import graduation_service.graduation.repository.CourseRepository;
 import lombok.RequiredArgsConstructor;
@@ -84,7 +85,7 @@ public class CoreSubjectServiceV1 {
 
 
     // 핵심교양 이수 체크
-    public List<CoreType> checkCoreSubject(Set<String> courseNumberSet, int curriculumYear, GraduationRequirements graduationRequirements) {
+    public List<CoreType> checkCoreSubject(Set<String> courseNumberSet, GraduationRequirementResponse graduationRequirements) {
         List<CoreType> requiredCoreTypes = graduationRequirements.getCoreTypes(); // 졸업요건에 명시된 핵심교양 타입 목록
         Set<CoreType> notCompletedTypes = new HashSet<>(requiredCoreTypes); // 결과 반환을 위한 Set (빠른 제거)
 

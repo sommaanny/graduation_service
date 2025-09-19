@@ -1,7 +1,6 @@
 package graduation_service.graduation.serviceV1.graduationComparisonServiceV1;
 
-import graduation_service.graduation.domain.entity.GraduationRequirements;
-import graduation_service.graduation.domain.entity.GraduationRequirementsCourses;
+
 import graduation_service.graduation.domain.enums.CoreType;
 import graduation_service.graduation.domain.enums.Department;
 import graduation_service.graduation.domain.pojo.English;
@@ -10,17 +9,17 @@ import graduation_service.graduation.dto.CreditStatusDto;
 import graduation_service.graduation.dto.GraduationResultDto;
 import graduation_service.graduation.dto.RemainingCourseDto;
 import graduation_service.graduation.dto.requestDto.graduationCheckDto.GraduationCheckRequest;
-import graduation_service.graduation.serviceV0.GraduationRequirementService;
+import graduation_service.graduation.dto.responseDto.graduationResponse.GraduationRequirementResponse;
 import graduation_service.graduation.serviceV0.graduationComparisonService.CompletedCourseCheckService;
-import graduation_service.graduation.serviceV0.graduationComparisonService.CoreSubjectService;
+import graduation_service.graduation.serviceV1.GraduationRequirementServiceV1;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.IOException;
+
 import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Optional;
+
+
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -29,8 +28,8 @@ import java.util.stream.Collectors;
 public class GraduationCheckServiceV1 {
 
     private final CompletedCourseCheckService completedCourseCheckService;
-    private final GraduationRequirementService graduationRequirementService;
-    private final CoreSubjectService coreSubjectService;
+    private final GraduationRequirementServiceV1 graduationRequirementService;
+    private final CoreSubjectServiceV1 coreSubjectService;
 
     @Transactional(readOnly = true)
     public GraduationResultDto checkGraduation(GraduationCheckRequest graduationCheckRequest) {
@@ -51,19 +50,18 @@ public class GraduationCheckServiceV1 {
         }
 
         //졸업요건 조회
-        Optional<GraduationRequirements> findGr = graduationRequirementService.findByGRDepartment(department, studentId);
-        GraduationRequirements gr = findGr.orElseThrow(() -> new NoSuchElementException("해당 학과의 졸업요건을 찾지 못했습니다."));
+        GraduationRequirementResponse findGr = graduationRequirementService.findByGRDepartment(department, studentId);
 
         //학점 충족 상태
-        CreditStatusDto creditStatus = checkCredits(gr, transcript);
+        CreditStatusDto creditStatus = checkCredits(findGr, transcript);
         boolean creditsPassed = creditStatus.isCreditPassed(); //학점 충족 여부
 
         //핵심교양 이수여부 체크
-        List<CoreType> remainingCoreTypes = checkRemainingCoreTypes(transcript, gr);
+        List<CoreType> remainingCoreTypes = checkRemainingCoreTypes(transcript, findGr);
 
         //이수 못한 과목 없는지 확인(핵심교양 제외)
         int missingElectiveMajorCredits = creditStatus.getMissingElectiveMajorCredits(); //모자른 전선학점
-        List<RemainingCourseDto> remainingCourses = checkRemainingCourses(transcript, gr, missingElectiveMajorCredits);
+        List<RemainingCourseDto> remainingCourses = checkRemainingCourses(transcript, findGr.getDepartment(), findGr.getGraduationRequirementsYear(), missingElectiveMajorCredits);
         boolean coursePassed = remainingCourses.isEmpty();
 
         //영어 성적 만족하는지
@@ -76,18 +74,18 @@ public class GraduationCheckServiceV1 {
         return new GraduationResultDto(graduated, creditStatus, englishPassed, coursePassed, remainingCourses, remainingCoreTypes);
     }
 
-    public List<CoreType> checkRemainingCoreTypes(Transcript transcript, GraduationRequirements gr) {
+    public List<CoreType> checkRemainingCoreTypes(Transcript transcript,  GraduationRequirementResponse gr) {
         Set<String> completedCourseNumbers = transcript.getCompletedCourseNumbers(); // 이수과목들 추출
 
         return coreSubjectService.checkCoreSubject(completedCourseNumbers, gr);
     }
 
     //이수 못한 과목 반환
-    public List<RemainingCourseDto> checkRemainingCourses(Transcript transcript, GraduationRequirements gr, int missingElectiveMajorCredits) {
+    public List<RemainingCourseDto> checkRemainingCourses(Transcript transcript, Department department, int year, int missingElectiveMajorCredits) {
         Set<String> completedCourseNumbers = transcript.getCompletedCourseNumbers(); // 이수과목들 추출
 
         // 졸업요건과 비교하여 이수 못한 과목들 반환
-        return completedCourseCheckService.checkCompletedCourses(completedCourseNumbers, gr, missingElectiveMajorCredits)
+        return completedCourseCheckService.checkCompletedCourses(completedCourseNumbers, department, year, missingElectiveMajorCredits)
                 .stream()
                 .map(grc -> new RemainingCourseDto(grc.getCourse().getCourseTitle(),
                                                     grc.getCourse().getCourseNumber(),
@@ -97,12 +95,12 @@ public class GraduationCheckServiceV1 {
     }
 
     //이수한 학점 체크
-    public static CreditStatusDto checkCredits(GraduationRequirements gr, Transcript transcript) {
-        int totalCreditsRequired = gr.getTotalCreditsEarned(); //졸업에 필요한 총 학점
-        int requiredMajorCreditsRequired = gr.getRequiredMajorCreditsEarned();//졸업에  필요한 전공 필수학점
-        int electiveMajorCreditsRequired = gr.getElectiveMajorCreditsEarned(); //졸업에 필요한 전공 선택학점
-        int requiredGeneralEducationCreditsRequired = gr.getRequiredGeneralEducationCreditsEarned(); //졸업에 필요한 교양 필수학점
-        int electiveGeneralEducationCreditsRequired = gr.getElectiveGeneralEducationCreditsEarned(); //졸업에 필요한 교양 선택학점
+    public static CreditStatusDto checkCredits(GraduationRequirementResponse gr, Transcript transcript) {
+        int totalCreditsRequired = gr.getTotalCredits(); //졸업에 필요한 총 학점
+        int requiredMajorCreditsRequired = gr.getRequiredMajorCredits(); //졸업에  필요한 전공 필수학점
+        int electiveMajorCreditsRequired = gr.getMajorCredits() - requiredMajorCreditsRequired; //졸업에 필요한 전공 선택학점
+        int requiredGeneralEducationCreditsRequired = gr.getRequiredGeneralEducationCredits(); //졸업에 필요한 교양 필수학점
+        int electiveGeneralEducationCreditsRequired = gr.getGeneralEducationCredits() - requiredGeneralEducationCreditsRequired; //졸업에 필요한 교양 선택학점
 
         //이수한 전공 필수학점
         int requiredMajorCreditsEarned = transcript.getRequiredMajorCredits();

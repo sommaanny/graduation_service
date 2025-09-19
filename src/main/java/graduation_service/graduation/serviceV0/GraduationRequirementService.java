@@ -9,6 +9,8 @@ import graduation_service.graduation.domain.enums.CourseType;
 import graduation_service.graduation.domain.enums.Department;
 import graduation_service.graduation.repository.GraduationRequirementsRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

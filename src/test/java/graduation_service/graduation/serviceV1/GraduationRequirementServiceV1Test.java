@@ -226,6 +226,7 @@ class GraduationRequirementServiceV1Test {
                 .graduationRequirementsYear(22)
                 .build();
 
+
         GraduationRequirementResponse response = graduationRequirementService.addGR(request);
 
         //when

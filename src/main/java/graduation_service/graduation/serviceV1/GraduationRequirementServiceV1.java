@@ -14,6 +14,9 @@ import graduation_service.graduation.dto.responseDto.graduationResponse.Graduati
 import graduation_service.graduation.repository.CourseRepository;
 import graduation_service.graduation.repository.GraduationRequirementsRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.CacheManager;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,6 +31,7 @@ public class GraduationRequirementServiceV1 {
 
     private final GraduationRequirementsRepository graduationRequirementsRepository;
     private final CourseRepository courseRepository;
+    private final CacheManager cacheManager;
 
     //저장
     @Transactional
@@ -93,6 +97,7 @@ public class GraduationRequirementServiceV1 {
     }
 
     //학과로 조회
+    @Cacheable(value = "graduationCache", key = "#department.name() + '_' + #year")
     public GraduationRequirementResponse findByGRDepartment(Department department, int year) {
         GraduationRequirements graduationRequirements = graduationRequirementsRepository.findByDepartment(department, year)
                 .orElseThrow(() -> new NoSuchElementException("해당 학수 번호에 해당하는 졸업 요건을 찾을 수 없습니다."));
@@ -114,6 +119,10 @@ public class GraduationRequirementServiceV1 {
                 .findOne(id).orElseThrow(() -> new NoSuchElementException("삭제할 졸업 요건을 찾을 수 없습니다."));
 
         graduationRequirementsRepository.delete(gr);
+
+        // 캐시 삭제
+        String key = gr.getDepartment().name() + "_" + gr.getGraduationRequirementsYear();
+        cacheManager.getCache("graduationCache").evict(key);
     }
 
     //변경
@@ -123,6 +132,10 @@ public class GraduationRequirementServiceV1 {
                 .findOne(id).orElseThrow(() -> new NoSuchElementException("졸업 요건을 찾을 수 없습니다."));
         gr.updateGraduationRequirement(updateDto);
         gr.validateCreditsConsistency();
+
+        // 캐시 삭제
+        String key = gr.getDepartment().name() + "_" + gr.getGraduationRequirementsYear();
+        cacheManager.getCache("graduationCache").evict(key);
     }
 
 
