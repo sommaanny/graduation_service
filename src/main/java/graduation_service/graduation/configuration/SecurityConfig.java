@@ -31,6 +31,8 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
+                //cors 허용
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 // 2. CSRF 보호 쿠키 방식
                 // 첫 GET 요청의 응답에 XSRF-TOKEN 쿠키를 실어보냄.
                 .csrf(csrf -> csrf
