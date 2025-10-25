@@ -82,7 +82,7 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
-        config.addAllowedOrigin("http://14.52.129.190:5173");
+        config.addAllowedOrigin("http://localhsot:5173");
         config.addAllowedOrigin("https://suborbicularly-bushlike-rodolfo.ngrok-free.dev/"); // 허용할 오리진
         config.addAllowedMethod("*"); // 허용할 HTTP 메서드
         config.addAllowedHeader("*"); // 모든 헤더 허용
