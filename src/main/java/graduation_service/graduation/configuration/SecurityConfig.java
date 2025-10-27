@@ -84,6 +84,7 @@ public class SecurityConfig {
         CorsConfiguration config = new CorsConfiguration();
         config.addAllowedOrigin("http://localhost:5173"); // 허용할 오리진
         config.addAllowedOrigin("https://suborbicularly-bushlike-rodolfo.ngrok-free.dev/");
+        config.addAllowedOrigin("https://with-suman-7d1l.vercel.app/");
         config.addAllowedMethod("*"); // 허용할 HTTP 메서드
         config.addAllowedHeader("*"); // 모든 헤더 허용
         config.setAllowCredentials(true); // 인증 정보 허용
