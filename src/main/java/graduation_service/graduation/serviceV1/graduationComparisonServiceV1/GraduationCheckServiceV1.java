@@ -133,7 +133,7 @@ public class GraduationCheckServiceV1 {
                 majorRequiredCreditsGap, //전공학점이 -10학점 모자랍니다 -> 말이 안됨
                 majorElectiveCreditsGap,
                 generalRequiredCreditsGap,
-                generalElectiveCreditsGap;
+                generalElectiveCreditsGap);
     }
 
 
