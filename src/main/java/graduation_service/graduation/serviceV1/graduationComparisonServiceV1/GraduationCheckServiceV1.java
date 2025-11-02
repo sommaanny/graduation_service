@@ -96,7 +96,6 @@ public class GraduationCheckServiceV1 {
 
     //이수한 학점 체크
     public static CreditStatusDto checkCredits(GraduationRequirementResponse gr, Transcript transcript) {
-        int totalCreditsRequired = gr.getTotalCredits(); //졸업에 필요한 총 학점
         int requiredMajorCreditsRequired = gr.getRequiredMajorCredits(); //졸업에  필요한 전공 필수학점
         int electiveMajorCreditsRequired = gr.getMajorCredits() - requiredMajorCreditsRequired; //졸업에 필요한 전공 선택학점
         int requiredGeneralEducationCreditsRequired = gr.getRequiredGeneralEducationCredits(); //졸업에 필요한 교양 필수학점
@@ -114,15 +113,27 @@ public class GraduationCheckServiceV1 {
         //이수한 교양 선택학점
         int electiveGeneralEducationCreditsEarned = transcript.getElectiveGeneralEducationCredits();
 
-        //이수한 총 학점
-        int totalCredits = transcript.getTotalCredits();
+        //모자란 전필 학점
+        int majorRequiredCreditsGap = Math.max(requiredMajorCreditsRequired - requiredMajorCreditsEarned, 0);
+
+        //모자란 전선 학점
+        int majorElectiveCreditsGap = Math.max(electiveMajorCreditsRequired - electiveMajorCreditsEarned, 0);
+
+        //모자란 교필
+        int generalRequiredCreditsGap = Math.max(requiredGeneralEducationCreditsRequired - requiredGeneralEducationCreditsEarned, 0);
+
+        //모자란 교선 학점
+        int generalElectiveCreditsGap = Math.max(electiveGeneralEducationCreditsRequired - electiveGeneralEducationCreditsEarned, 0);
+
+        //모자란 총 학점(위에꺼 더하면 됨)
+        int totalCreditsGap = majorRequiredCreditsGap + majorElectiveCreditsGap + generalRequiredCreditsGap + generalElectiveCreditsGap;
 
         return new CreditStatusDto(
-                Math.max(totalCreditsRequired - totalCredits, 0),  //모자란 학점이기에 음수가 나오면 안됨
-                Math.max(requiredMajorCreditsRequired - requiredMajorCreditsEarned, 0), //전공학점이 -10학점 모자랍니다 -> 말이 안됨
-                Math.max(electiveMajorCreditsRequired - electiveMajorCreditsEarned, 0),
-                Math.max(requiredGeneralEducationCreditsRequired - requiredGeneralEducationCreditsEarned, 0),
-                Math.max(electiveGeneralEducationCreditsRequired - electiveGeneralEducationCreditsEarned, 0));
+                totalCreditsGap,  //모자란 학점이기에 음수가 나오면 안됨
+                majorRequiredCreditsGap, //전공학점이 -10학점 모자랍니다 -> 말이 안됨
+                majorElectiveCreditsGap,
+                generalRequiredCreditsGap,
+                generalElectiveCreditsGap);
     }
 
 
