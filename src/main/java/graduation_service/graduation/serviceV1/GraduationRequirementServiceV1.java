@@ -100,7 +100,7 @@ public class GraduationRequirementServiceV1 {
     @Cacheable(value = "graduationCache", key = "#department.name() + '_' + #year")
     public GraduationRequirementResponse findByGRDepartment(Department department, int year) {
         GraduationRequirements graduationRequirements = graduationRequirementsRepository.findByDepartment(department, year)
-                .orElseThrow(() -> new NoSuchElementException("해당 학수 번호에 해당하는 졸업 요건을 찾을 수 없습니다."));
+                .orElseThrow(() -> new NoSuchElementException("해당 년도 해당 학과의 졸업 요건을 찾을 수 없습니다."));
 
         return GraduationRequirementResponse.fromEntity(graduationRequirements);
     }
