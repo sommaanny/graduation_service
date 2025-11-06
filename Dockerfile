@@ -5,7 +5,7 @@ COPY . .
 RUN ./gradlew bootJar --no-daemon
 
 # 2단계: 실행용 (불필요한 도구 제거 → 최소화)
-FROM openjdk:17-jdk-slim
+FROM eclipse-temurin:17-jre-jammy
 WORKDIR /spring-boot
 COPY --from=builder /app/build/libs/graduation-0.0.1-SNAPSHOT.jar app.jar
 ENTRYPOINT ["java", "-jar", "/spring-boot/app.jar"]
