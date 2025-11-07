@@ -16,6 +16,7 @@ import graduation_service.graduation.repository.GraduationRequirementsRepository
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -69,14 +70,22 @@ public class GraduationRequirementServiceV1 {
         GraduationRequirements gr = graduationRequirementsRepository.findOne(grId).orElseThrow(() -> new NoSuchElementException("졸업 요건을 찾을 수 없습니다."));
         gr.addGraduationRequirementsCourses(grc);
 
+        // 캐시 갱신
+        String key = gr.getDepartment().name() + "_" + gr.getGraduationRequirementsYear();
+        cacheManager.getCache("graduationCache").put(key, gr);
+
         return new GraduationCourseCreateResponse(grId, gr.getGraduationRequirementsYear(), courseRequest.getCourseId(), courseRequest.getCourseType());
     }
 
     //졸업요건에 핵심교양 조건 추가
     @Transactional
     public GraduationCoreSubjectCreateResponse addCoreSubjectTypes(Long grId, int year, CoreType coreType) {
-        GraduationRequirements graduationRequirements = graduationRequirementsRepository.findOne(grId).orElseThrow(() -> new NoSuchElementException("졸업 요건을 찾을 수 없습니다."));
-        graduationRequirements.addCoreType(coreType);
+        GraduationRequirements gr = graduationRequirementsRepository.findOne(grId).orElseThrow(() -> new NoSuchElementException("졸업 요건을 찾을 수 없습니다."));
+        gr.addCoreType(coreType);
+
+        // 캐시 갱신
+        String key = gr.getDepartment().name() + "_" + gr.getGraduationRequirementsYear();
+        cacheManager.getCache("graduationCache").put(key, gr);
 
         return new GraduationCoreSubjectCreateResponse(grId, year, coreType);
     }
@@ -84,8 +93,12 @@ public class GraduationRequirementServiceV1 {
     //졸업요건에 핵심교양 조건 삭제
     @Transactional
     public void deleteCoreSubjectTypes(Long grId, CoreType coreType) {
-        GraduationRequirements graduationRequirements = graduationRequirementsRepository.findOne(grId).orElseThrow(() -> new NoSuchElementException("졸업 요건을 찾을 수 없습니다."));
-        graduationRequirements.deleteCoreType(coreType);
+        GraduationRequirements gr = graduationRequirementsRepository.findOne(grId).orElseThrow(() -> new NoSuchElementException("졸업 요건을 찾을 수 없습니다."));
+        gr.deleteCoreType(coreType);
+
+        // 캐시 삭제
+        String key = gr.getDepartment().name() + "_" + gr.getGraduationRequirementsYear();
+        cacheManager.getCache("graduationCache").evict(key);
     }
 
     //조회
