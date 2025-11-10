@@ -75,12 +75,12 @@ public class GraduationCheckService {
     }
 
     //이수 못한 과목 반환
-    public List<GraduationRequirementsCourses> checkRemainingCourses(Transcript transcript, GraduationRequirements gr, int missingElectiveMajorCredits) throws IOException {
-        Set<String> completedCourseNumbers = transcript.getCompletedCourseNumbers(); // 이수과목들 추출
-
-        // 졸업요건과 비교하여 이수 못한 과목들 반환
-        return completedCourseCheckService.checkCompletedCourses(completedCourseNumbers, gr.getDepartment(), gr.getGraduationRequirementsYear(), missingElectiveMajorCredits);
-    }
+//    public List<GraduationRequirementsCourses> checkRemainingCourses(Transcript transcript, GraduationRequirements gr, int missingElectiveMajorCredits) throws IOException {
+//        Set<String> completedCourseNumbers = transcript.getCompletedCourseNumbers(); // 이수과목들 추출
+//
+//        // 졸업요건과 비교하여 이수 못한 과목들 반환
+//        return completedCourseCheckService.checkCompletedCourses(completedCourseNumbers, gr.getDepartment(), gr.getGraduationRequirementsYear(), missingElectiveMajorCredits);
+//    }
 
     //이수한 학점 체크
     public static CreditStatusDto checkCredits(GraduationRequirements gr, Transcript transcript) {

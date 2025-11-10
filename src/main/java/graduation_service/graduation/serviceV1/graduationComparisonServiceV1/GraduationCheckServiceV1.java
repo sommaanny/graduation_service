@@ -52,16 +52,16 @@ public class GraduationCheckServiceV1 {
         //졸업요건 조회
         GraduationRequirementResponse findGr = graduationRequirementService.findByGRDepartment(department, studentId);
 
-        //학점 충족 상태
+        //학점 충족 상태 -> 이수한 학점수만 비교
         CreditStatusDto creditStatus = checkCredits(findGr, transcript);
         boolean creditsPassed = creditStatus.isCreditPassed(); //학점 충족 여부
 
         //핵심교양 이수여부 체크
         List<CoreType> remainingCoreTypes = checkRemainingCoreTypes(transcript, findGr);
 
-        //이수 못한 과목 없는지 확인(핵심교양 제외)
-        int missingElectiveMajorCredits = creditStatus.getMissingElectiveMajorCredits(); //모자른 전선학점
-        List<RemainingCourseDto> remainingCourses = checkRemainingCourses(transcript, findGr.getDepartment(), findGr.getGraduationRequirementsYear(), missingElectiveMajorCredits);
+        //이수 못한 과목 없는지 확인 -> 전필, 교필은 학점에 상관없이 전부 이수해야함 그걸 체크
+//        int missingElectiveMajorCredits = creditStatus.getMissingElectiveMajorCredits(); //모자른 전선학점
+        List<RemainingCourseDto> remainingCourses = checkRemainingCourses(transcript, findGr.getDepartment(), findGr.getGraduationRequirementsYear(), creditStatus);
         boolean coursePassed = remainingCourses.isEmpty();
 
         //영어 성적 만족하는지
@@ -81,11 +81,11 @@ public class GraduationCheckServiceV1 {
     }
 
     //이수 못한 과목 반환
-    public List<RemainingCourseDto> checkRemainingCourses(Transcript transcript, Department department, int year, int missingElectiveMajorCredits) {
+    public List<RemainingCourseDto> checkRemainingCourses(Transcript transcript, Department department, int year, CreditStatusDto creditStatus) {
         Set<String> completedCourseNumbers = transcript.getCompletedCourseNumbers(); // 이수과목들 추출
 
         // 졸업요건과 비교하여 이수 못한 과목들 반환
-        return completedCourseCheckService.checkCompletedCourses(completedCourseNumbers, department, year, missingElectiveMajorCredits)
+        return completedCourseCheckService.checkCompletedCourses(completedCourseNumbers, department, year, creditStatus)
                 .stream()
                 .map(grc -> new RemainingCourseDto(grc.getCourse().getCourseTitle(),
                                                     grc.getCourse().getCourseNumber(),
