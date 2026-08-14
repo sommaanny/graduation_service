@@ -16,7 +16,6 @@ import graduation_service.graduation.repository.GraduationRequirementsRepository
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -70,9 +69,13 @@ public class GraduationRequirementServiceV1 {
         GraduationRequirements gr = graduationRequirementsRepository.findOne(grId).orElseThrow(() -> new NoSuchElementException("졸업 요건을 찾을 수 없습니다."));
         gr.addGraduationRequirementsCourses(grc);
 
-        // 캐시 갱신
+        // 캐시 무효화 (put 대신 evict 사용)
+        // put(key, gr)은 @Cacheable이 저장하는 DTO와 달리 엔티티를 캐시에 넣어
+        // 이후 조회 시 타입 불일치(ClassCastException)가 발생하고,
+        // 트랜잭션 롤백 시 커밋되지 않은 데이터가 캐시에 남는 문제가 있음.
+        // evict로 무효화하면 다음 조회 시 DB에서 최신 데이터를 읽어 DTO로 재캐싱됨.
         String key = gr.getDepartment().name() + "_" + gr.getGraduationRequirementsYear();
-        cacheManager.getCache("graduationCache").put(key, gr);
+        cacheManager.getCache("graduationCache").evict(key);
 
         return new GraduationCourseCreateResponse(grId, gr.getGraduationRequirementsYear(), courseRequest.getCourseId(), courseRequest.getCourseType());
     }
@@ -83,9 +86,13 @@ public class GraduationRequirementServiceV1 {
         GraduationRequirements gr = graduationRequirementsRepository.findOne(grId).orElseThrow(() -> new NoSuchElementException("졸업 요건을 찾을 수 없습니다."));
         gr.addCoreType(coreType);
 
-        // 캐시 갱신
+        // 캐시 무효화 (put 대신 evict 사용)
+        // put(key, gr)은 @Cacheable이 저장하는 DTO와 달리 엔티티를 캐시에 넣어
+        // 이후 조회 시 타입 불일치(ClassCastException)가 발생하고,
+        // 트랜잭션 롤백 시 커밋되지 않은 데이터가 캐시에 남는 문제가 있음.
+        // evict로 무효화하면 다음 조회 시 DB에서 최신 데이터를 읽어 DTO로 재캐싱됨.
         String key = gr.getDepartment().name() + "_" + gr.getGraduationRequirementsYear();
-        cacheManager.getCache("graduationCache").put(key, gr);
+        cacheManager.getCache("graduationCache").evict(key);
 
         return new GraduationCoreSubjectCreateResponse(grId, year, coreType);
     }
