@@ -17,15 +17,12 @@ import java.util.regex.Pattern;
 public class TranscriptExtractService {
 
     public Transcript extract(MultipartFile file) {
-        InputStream inputStream = null;
         String text;
-        try {
-            inputStream = file.getInputStream();
-            PDDocument document = PDDocument.load(inputStream); // pdf 파일 읽기
+        // try-with-resources: 예외 발생 여부와 관계없이 InputStream과 PDDocument가 자동으로 close됨
+        try (InputStream inputStream = file.getInputStream();
+             PDDocument document = PDDocument.load(inputStream)) { // pdf 파일 읽기
             PDFTextStripper stripper = new PDFTextStripper(); //텍스트 추출 도구
             text = stripper.getText(document); //텍스트 추출
-            document.close(); //리소스 정리
-
         } catch (IOException e) {
             throw new TranscriptParsingException("성적표를 파싱하던 중 오류 발생", e);
         }
